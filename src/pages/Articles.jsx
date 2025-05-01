@@ -11,7 +11,6 @@ const Articles = () => {
     const fetchArticles = async () => {
       try {
         const response = await getArticles();
-        // Filter only published articles from the results
         const publishedArticles = response.data.results.filter(
           (article) => article.is_published
         );
