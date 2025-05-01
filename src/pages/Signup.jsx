@@ -15,15 +15,34 @@ const Signup = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const validateDateFormat = (date) => {
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/; 
+    return dateRegex.test(date);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError(""); 
+
+    
+    if (!formData.date_of_birth) {
+      setError("Date of birth is required");
+      return;
+    }
+    if (!validateDateFormat(formData.date_of_birth)) {
+      setError("Date of birth must be in YYYY-MM-DD format");
+      return;
+    }
 
     try {
-      await register(formData); // Send the entire formData to the backend
-      navigate("/login"); // Redirect to login on success
+        console.log(formData)
+      await register(formData);
+      navigate("/login"); 
     } catch (err) {
-      setError(err.response?.data?.error || "Signup failed");
+      const errorMsg = err.response?.data?.error || 
+                      Object.values(err.response?.data || {})[0] || 
+                      "Signup failed";
+      setError(errorMsg);
     }
   };
 
