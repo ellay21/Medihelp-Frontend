@@ -1,3 +1,4 @@
+// NavBar.js
 import { Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { useState } from "react";
@@ -9,9 +10,14 @@ const NavBar = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  };
+
   return (
-    <nav className="absolute top-5 left-0 w-full shadow-md z-10">
-      <div className="container mx-auto px-4 flex justify-between items-center">
+    <nav className="absolute top-0 left-0 w-full shadow-md z-10">
+      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <div className="text-xl font-bold text-blue-600">MediHelp+</div>
 
         <div className="md:hidden">
@@ -30,20 +36,39 @@ const NavBar = () => {
           <Link to="/about" className="text-white hover:text-blue-600">
             About Us
           </Link>
-          <Link to="/services" className="text-white hover:text-blue-600">
-            Services
+          <Link to="/articles" className="text-white hover:text-blue-600">
+            Articles
           </Link>
-          <Link to="/doctors" className="text-white hover:text-blue-600">
-            Doctors
-          </Link>
+          {localStorage.getItem("token") && (
+            <>
+              <Link to="/symptom-checker" className="text-white hover:text-blue-600">
+                Symptom Checker
+              </Link>
+              <Link to="/symptom-history" className="text-white hover:text-blue-600">
+                Symptom History
+              </Link>
+              <Link to="/admin/add-article" className="text-white hover:text-blue-600">
+                Add Article
+              </Link>
+            </>
+          )}
           <Link to="/contact" className="text-white hover:text-blue-600">
             Contact Us
           </Link>
-          <Link to="/signup">
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition">
-              Sign Up
+          {localStorage.getItem("token") ? (
+            <button
+              onClick={handleLogout}
+              className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition"
+            >
+              Logout
             </button>
-          </Link>
+          ) : (
+            <Link to="/signup">
+              <button className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition">
+                Sign Up
+              </button>
+            </Link>
+          )}
         </div>
       </div>
 
@@ -65,19 +90,37 @@ const NavBar = () => {
               About Us
             </Link>
             <Link
-              to="/services"
+              to="/articles"
               className="text-blue-600 hover:text-blue-800"
               onClick={toggleMenu}
             >
-              Services
+              Articles
             </Link>
-            <Link
-              to="/doctors"
-              className="text-blue-600 hover:text-blue-800"
-              onClick={toggleMenu}
-            >
-              Doctors
-            </Link>
+            {localStorage.getItem("token") && (
+              <>
+                <Link
+                  to="/symptom-checker"
+                  className="text-blue-600 hover:text-blue-800"
+                  onClick={toggleMenu}
+                >
+                  Symptom Checker
+                </Link>
+                <Link
+                  to="/symptom-history"
+                  className="text-blue-600 hover:text-blue-800"
+                  onClick={toggleMenu}
+                >
+                  Symptom History
+                </Link>
+                <Link
+                  to="/admin/add-article"
+                  className="text-blue-600 hover:text-blue-800"
+                  onClick={toggleMenu}
+                >
+                  Add Article
+                </Link>
+              </>
+            )}
             <Link
               to="/contact"
               className="text-blue-600 hover:text-blue-800"
@@ -85,11 +128,23 @@ const NavBar = () => {
             >
               Contact Us
             </Link>
-            <Link to="/signup" onClick={toggleMenu}>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition">
-                Sign Up
+            {localStorage.getItem("token") ? (
+              <button
+                onClick={() => {
+                  handleLogout();
+                  toggleMenu();
+                }}
+                className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition"
+              >
+                Logout
               </button>
-            </Link>
+            ) : (
+              <Link to="/signup" onClick={toggleMenu}>
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition">
+                  Sign Up
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       )}
