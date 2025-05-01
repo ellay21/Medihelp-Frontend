@@ -39,6 +39,9 @@ const NavBar = () => {
           <Link to="/articles" className="text-white hover:text-blue-600">
             Articles
           </Link>
+          <Link to="/videos" className="text-white hover:text-blue-600">
+            Videos
+          </Link>
           {localStorage.getItem("token") && (
             <>
               <Link to="/symptom-checker" className="text-white hover:text-blue-600">
@@ -95,6 +98,13 @@ const NavBar = () => {
               onClick={toggleMenu}
             >
               Articles
+            </Link>
+            <Link
+              to="/videos"
+              className="text-blue-600 hover:text-blue-800"
+              onClick={toggleMenu}
+            >
+              Videos
             </Link>
             {localStorage.getItem("token") && (
               <>

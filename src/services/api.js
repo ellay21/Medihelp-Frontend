@@ -21,3 +21,6 @@ export const getSymptomHistory = () => {
 export const getArticles = () => {
   return axios.get(`${API_URL}/api/content/articles/`);
 };
+export const getVideos = () => {
+    return axios.get(`${API_URL}/api/content/videos/`);
+  };
