@@ -22,5 +22,17 @@ export const getArticles = () => {
   return axios.get(`${API_URL}/api/content/articles/`);
 };
 export const getVideos = () => {
-    return axios.get(`${API_URL}/api/content/videos/`);
-  };
+  return axios.get(`${API_URL}/api/content/videos/`);
+};
+export const getFirstAid = () => {
+  const token = localStorage.getItem("token");
+  return axios.get(`${API_URL}/api/firstaid/`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+export const getHealthChecks = () => {
+  const token = localStorage.getItem("token");
+  return axios.get(`${API_URL}/api/health/checks/`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
