@@ -11,7 +11,10 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await login(formData);
-      localStorage.setItem("token", response.data.token); 
+  
+      console.log('token: ', response.data.tokens.access)
+      localStorage.setItem("token", response.data.tokens.access);
+      
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.error || "Login failed");
