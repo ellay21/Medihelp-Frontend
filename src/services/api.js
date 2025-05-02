@@ -30,6 +30,12 @@ export const getFirstAid = () => {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
+export const searchFirstAid = (query) => {
+  const token = localStorage.getItem("token");
+  return axios.get(`${API_URL}/api/firstaid/?q=${encodeURIComponent(query)}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
 export const getHealthChecks = () => {
   const token = localStorage.getItem("token");
   return axios.get(`${API_URL}/api/health/checks/`, {
