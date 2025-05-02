@@ -12,7 +12,7 @@ const Login = () => {
     try {
       const response = await login(formData);
   
-      
+      console.log('token: ', response.data.tokens.access)
       localStorage.setItem("token", response.data.tokens.access);
       
       navigate("/");

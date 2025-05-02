@@ -5,8 +5,8 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Videos from "./components/Videos";
 import Articles from "./pages/Articles";
-
-
+import ProtectedRoute from "./components/ProtectedRoute";
+import FirstAidList from "./pages/FirstAidList";
 function App() {
   return (
     <Router>
@@ -16,6 +16,14 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/videos" element={<Videos />} />
         <Route path="/articles" element={<Articles />} />
+        <Route
+          path="/first-aid"
+          element={
+            <ProtectedRoute>
+              <FirstAidList />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );
