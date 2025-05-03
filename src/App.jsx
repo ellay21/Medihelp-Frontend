@@ -7,6 +7,7 @@ import Videos from "./pages/Videos";
 import Articles from "./pages/Articles";
 import ProtectedRoute from "./components/ProtectedRoute";
 import FirstAidList from "./pages/FirstAidList";
+import SymptomList from "./pages/SymptomChecker";
 import Home from "./pages/Home";
 function App() {
   return (
@@ -22,6 +23,14 @@ function App() {
           element={
             <ProtectedRoute>
               <FirstAidList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/symptom-checker"
+          element={
+            <ProtectedRoute>
+              <SymptomList />
             </ProtectedRoute>
           }
         />

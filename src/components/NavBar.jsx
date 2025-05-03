@@ -86,11 +86,7 @@ const NavBar = () => {
             )}
           </div>
 
-          {localStorage.getItem("token") && (
-            <Link to="/symptom-history" className="text-white hover:text-blue-200">
-              Symptom History
-            </Link>
-          )}
+          
           <Link to="/contact" className="text-white hover:text-blue-200">
             Contact Us
           </Link>
