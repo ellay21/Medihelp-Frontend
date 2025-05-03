@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
 import { uploadSkinDiagnosis } from "../services/api";
 
@@ -7,10 +7,21 @@ const SkinDiagnosis = () => {
   const [diagnosis, setDiagnosis] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [credits, setCredits] = useState(() => {
+    const savedCredits = localStorage.getItem("skinDiagnosisCredits");
+    return savedCredits ? parseInt(savedCredits, 10) : 20;
+  });
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentProcessing, setPaymentProcessing] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+
+  useEffect(() => {
+    localStorage.setItem("skinDiagnosisCredits", credits);
+  }, [credits]);
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
-    setDiagnosis(null); // Reset diagnosis when a new file is selected
+    setDiagnosis(null);
     setError(null);
   };
 
@@ -18,6 +29,11 @@ const SkinDiagnosis = () => {
     e.preventDefault();
     if (!selectedFile) {
       setError("Please select an image to upload.");
+      return;
+    }
+
+    if (credits < 10) {
+      setError("Insufficient credits. Please upgrade your package to continue.");
       return;
     }
 
@@ -29,6 +45,7 @@ const SkinDiagnosis = () => {
       setError(null);
       const response = await uploadSkinDiagnosis(formData);
       setDiagnosis(response.data);
+      setCredits((prevCredits) => prevCredits - 10);
     } catch (err) {
       setError(err.message || "Failed to upload image or get diagnosis");
     } finally {
@@ -36,13 +53,45 @@ const SkinDiagnosis = () => {
     }
   };
 
-  if (!localStorage.getItem("token")) return <div className="text-center text-red-600">Please log in to use Skin Diagnosis.</div>;
+  const handlePayment = () => {
+    if (!selectedPaymentMethod) {
+      alert("Please select a payment method.");
+      return;
+    }
+
+    setPaymentProcessing(true);
+    setTimeout(() => {
+      setPaymentProcessing(false);
+      setShowPaymentModal(false);
+      setCredits(20);
+      localStorage.setItem("skinDiagnosisCredits", 20);
+      setError(null);
+      alert("Payment successful! Credits have been reset to 20.");
+    }, 2000); // Simulate a 2-second payment process
+  };
+
+  if (!localStorage.getItem("token"))
+    return <div className="text-center text-red-600">Please log in to use Skin Diagnosis.</div>;
 
   return (
     <>
       <NavBar />
       <div className="container mx-auto p-4">
         <h2 className="text-3xl font-bold text-blue-700 mb-6 text-center">Skin Diagnosis</h2>
+
+        {/* Credit Display */}
+        <div className="max-w-md mx-auto mb-6 p-4 bg-white rounded-lg shadow-md border border-gray-200">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium text-gray-700">Free Credits Remaining</span>
+            <span className="text-xl font-semibold text-blue-600">{credits}</span>
+          </div>
+          <div className="mt-2 h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-blue-600 rounded-full transition-all duration-300"
+              style={{ width: `${(credits / 20) * 100}%` }} // Adjusted for max 20 credits
+            ></div>
+          </div>
+        </div>
 
         {/* Upload Form */}
         <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6 border border-blue-100">
@@ -54,18 +103,116 @@ const SkinDiagnosis = () => {
                 accept="image/*"
                 onChange={handleFileChange}
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                disabled={credits < 10 || loading} // Disable input when credits are low
               />
-              {error && !diagnosis && <p className="text-red-600 text-sm mt-2">{error}</p>}
+              {(error || credits < 10) && !diagnosis && (
+                <p className="text-red-600 text-sm mt-2">
+                  {error || "Insufficient credits. Please upgrade your package to continue."}
+                  {(error === "Insufficient credits. Please upgrade your package to continue." ||
+                    credits < 10) && (
+                    <button
+                      onClick={() => setShowPaymentModal(true)}
+                      className="text-blue-600 underline ml-1"
+                    >
+                      Upgrade Now
+                    </button>
+                  )}
+                </p>
+              )}
             </div>
             <button
               type="submit"
-              disabled={loading}
-              className={`w-full px-6 py-2 rounded-full font-semibold text-white ${loading ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"} transition-colors`}
+              disabled={loading || credits < 10}
+              className={`w-full px-6 py-2 rounded-full font-semibold text-white ${
+                loading || credits < 10 ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"
+              } transition-colors`}
             >
               {loading ? "Analyzing..." : "Submit"}
             </button>
           </form>
         </div>
+
+        {/* Payment Modal */}
+        {showPaymentModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 max-w-sm w-full">
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Upgrade Package</h3>
+              <p className="text-gray-600 mb-4">
+                Select a payment method to purchase more credits (Fake payment simulation).
+              </p>
+              <div className="space-y-4">
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="credit-card"
+                    checked={selectedPaymentMethod === "credit-card"}
+                    onChange={(e) => setSelectedPaymentMethod(e.target.value)}
+                    className="form-radio text-blue-600"
+                    disabled={paymentProcessing}
+                  />
+                  <span className="text-gray-700">Credit Card</span>
+                </label>
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="paypal"
+                    checked={selectedPaymentMethod === "paypal"}
+                    onChange={(e) => setSelectedPaymentMethod(e.target.value)}
+                    className="form-radio text-blue-600"
+                    disabled={paymentProcessing}
+                  />
+                  <span className="text-gray-700">PayPal</span>
+                </label>
+              </div>
+              <div className="mt-6 flex justify-between">
+                <button
+                  onClick={() => setShowPaymentModal(false)}
+                  className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition"
+                  disabled={paymentProcessing}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handlePayment}
+                  className={`px-4 py-2 rounded-lg text-white flex items-center space-x-2 ${
+                    paymentProcessing ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"
+                  } transition-colors`}
+                  disabled={paymentProcessing}
+                >
+                  {paymentProcessing ? (
+                    <>
+                      <svg
+                        className="animate-spin h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v8h-8z"
+                        ></path>
+                      </svg>
+                      <span>Processing...</span>
+                    </>
+                  ) : (
+                    <span>Pay Now</span>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Diagnosis Result */}
         {diagnosis && (
@@ -95,7 +242,15 @@ const SkinDiagnosis = () => {
                 </p>
                 <p className="text-gray-600 mt-2">
                   <span className="font-medium">Urgency: </span>
-                  <span className={`capitalize ${diagnosis.diagnosis.urgency === "low" ? "text-green-600" : diagnosis.diagnosis.urgency === "medium" ? "text-yellow-600" : "text-red-600"}`}>
+                  <span
+                    className={`capitalize ${
+                      diagnosis.diagnosis.urgency === "low"
+                        ? "text-green-600"
+                        : diagnosis.diagnosis.urgency === "medium"
+                        ? "text-yellow-600"
+                        : "text-red-600"
+                    }`}
+                  >
                     {diagnosis.diagnosis.urgency}
                   </span>
                 </p>
