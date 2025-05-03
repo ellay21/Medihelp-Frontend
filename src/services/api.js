@@ -54,3 +54,12 @@ export const chatInteract = (message) => {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
+export const uploadSkinDiagnosis = (formData) => {
+  const token = localStorage.getItem("token");
+  return axios.post(`${API_URL}/api/skin-diagnosis/`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};

@@ -80,6 +80,13 @@ const NavBar = () => {
                     >
                       First Aid
                     </Link>
+                    <Link
+                      to="/skin-diagnosis"
+                      className="block px-4 py-2 hover:bg-blue-100 text-blue-600 hover:text-blue-800"
+                      onClick={() => setIsServicesOpen(false)}
+                    >
+                      Skin-Diagnosis
+                    </Link>
                   </>
                 )}
               </div>
@@ -167,6 +174,13 @@ const NavBar = () => {
                       >
                         First Aid
                       </Link>
+                      <Link
+                      to="/skin-diagnosis"
+                      className="block px-4 py-2 hover:bg-blue-100 text-blue-600 hover:text-blue-800"
+                      onClick={() => setIsServicesOpen(false)}
+                    >
+                      Skin-Diagnosis
+                    </Link>
                     </>
                   )}
                 </div>

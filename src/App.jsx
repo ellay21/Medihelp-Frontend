@@ -9,6 +9,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import FirstAidList from "./pages/FirstAidList";
 import SymptomList from "./pages/SymptomChecker";
 import Home from "./pages/Home";
+import SkinDiagnosis from "./pages/SkinDiagnosis";
 function App() {
   return (
     <Router>
@@ -31,6 +32,14 @@ function App() {
           element={
             <ProtectedRoute>
               <SymptomList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/skin-diagnosis"
+          element={
+            <ProtectedRoute>
+              <SkinDiagnosis />
             </ProtectedRoute>
           }
         />
