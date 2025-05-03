@@ -32,11 +32,6 @@ const SkinDiagnosis = () => {
       return;
     }
 
-    if (credits < 10) {
-      setError("Insufficient credits. Please upgrade your package to continue.");
-      return;
-    }
-
     const formData = new FormData();
     formData.append("image", selectedFile);
 
@@ -67,7 +62,7 @@ const SkinDiagnosis = () => {
       localStorage.setItem("skinDiagnosisCredits", 20);
       setError(null);
       alert("Payment successful! Credits have been reset to 20.");
-    }, 2000); // Simulate a 2-second payment process
+    }, 2000);
   };
 
   if (!localStorage.getItem("token"))
@@ -88,10 +83,25 @@ const SkinDiagnosis = () => {
           <div className="mt-2 h-2 bg-gray-200 rounded-full overflow-hidden">
             <div
               className="h-full bg-blue-600 rounded-full transition-all duration-300"
-              style={{ width: `${(credits / 20) * 100}%` }} // Adjusted for max 20 credits
+              style={{ width: `${(credits / 20) * 100}%` }}
             ></div>
           </div>
         </div>
+
+        {/* Upgrade Prompt */}
+        {credits < 10 && (
+          <div className="max-w-md mx-auto mb-4 p-4 bg-yellow-100 rounded-lg shadow-md border border-yellow-200">
+            <p className="text-yellow-800 text-center">
+              Insufficient credits. Please upgrade your package to continue.
+              <button
+                onClick={() => setShowPaymentModal(true)}
+                className="text-blue-600 underline ml-1"
+              >
+                Upgrade Now
+              </button>
+            </p>
+          </div>
+        )}
 
         {/* Upload Form */}
         <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6 border border-blue-100">
@@ -103,21 +113,10 @@ const SkinDiagnosis = () => {
                 accept="image/*"
                 onChange={handleFileChange}
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                disabled={credits < 10 || loading} // Disable input when credits are low
+                disabled={credits < 10 || loading}
               />
-              {(error || credits < 10) && !diagnosis && (
-                <p className="text-red-600 text-sm mt-2">
-                  {error || "Insufficient credits. Please upgrade your package to continue."}
-                  {(error === "Insufficient credits. Please upgrade your package to continue." ||
-                    credits < 10) && (
-                    <button
-                      onClick={() => setShowPaymentModal(true)}
-                      className="text-blue-600 underline ml-1"
-                    >
-                      Upgrade Now
-                    </button>
-                  )}
-                </p>
+              {error && (
+                <p className="text-red-600 text-sm mt-2">{error}</p>
               )}
             </div>
             <button
@@ -160,7 +159,7 @@ const SkinDiagnosis = () => {
                     value="paypal"
                     checked={selectedPaymentMethod === "paypal"}
                     onChange={(e) => setSelectedPaymentMethod(e.target.value)}
-                    className="form-radio text-blue-600"
+                    className="form-radio text-green-600"
                     disabled={paymentProcessing}
                   />
                   <span className="text-gray-700">PayPal</span>
