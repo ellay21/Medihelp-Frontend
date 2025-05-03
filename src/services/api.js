@@ -8,7 +8,7 @@ export const register = (data) =>
 export const login = (data) => axios.post(`${API_URL}/api/auth/login/`, data);
 export const checkSymptoms = (data) => {
   const token = localStorage.getItem("token");
-  return axios.post(`${API_URL}/api/symptoms/check/`, data, {
+  return axios.post(`${API_URL}/api/health/checks/`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
@@ -39,6 +39,18 @@ export const searchFirstAid = (query) => {
 export const getHealthChecks = () => {
   const token = localStorage.getItem("token");
   return axios.get(`${API_URL}/api/health/checks/`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+export const getSymptoms = () => {
+  const token = localStorage.getItem("token");
+  return axios.get(`${API_URL}/api/health/symptoms/`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+export const chatInteract = (message) => {
+  const token = localStorage.getItem("token");
+  return axios.post(`${API_URL}/api/chat/interact/`, { message }, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
