@@ -7,12 +7,12 @@ import Videos from "./pages/Videos";
 import Articles from "./pages/Articles";
 import ProtectedRoute from "./components/ProtectedRoute";
 import FirstAidList from "./pages/FirstAidList";
-
+import Home from "./pages/Home";
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Hero />} />
+        <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/videos" element={<Videos />} />
