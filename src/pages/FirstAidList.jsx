@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getFirstAid, searchFirstAid } from "../services/api";
+
 import NavBar from "../components/NavBar";
+
 const FirstAidList = () => {
   const [firstAidGuides, setFirstAidGuides] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,9 +23,14 @@ const FirstAidList = () => {
       const response = query
         ? await searchFirstAid(query)
         : await getFirstAid();
-      setFirstAidGuides(response.data);
+      // Handle both direct array and paginated response
+      const guides = Array.isArray(response.data)
+        ? response.data
+        : response.data.results || [];
+      setFirstAidGuides(guides);
     } catch (err) {
       setError(err.message || "Failed to fetch first aid guides");
+      setFirstAidGuides([]); // Ensure firstAidGuides is an array on error
     } finally {
       setLoading(false);
     }
@@ -54,7 +61,7 @@ const FirstAidList = () => {
   return (
     <>
       <NavBar />
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto p-4 mt-15">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800">First Aid Guides</h2>
           <div className="relative w-64">
@@ -68,7 +75,7 @@ const FirstAidList = () => {
             {searchTerm && (
               <button
                 onClick={clearSearch}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                className="absolute right-2  transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
               >
                 ✕
               </button>
