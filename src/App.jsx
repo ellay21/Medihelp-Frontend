@@ -10,6 +10,11 @@ import FirstAidList from "./pages/FirstAidList";
 import SymptomList from "./pages/SymptomChecker";
 import Home from "./pages/Home";
 import SkinDiagnosis from "./pages/SkinDiagnosis";
+import { Doctor } from "./pages/Doctor/Doctor";
+import { Doctors } from "./pages/Doctor/Doctors";
+import { DoctorDetailPage } from "./pages/Doctor/DoctorDetailPage";
+import AvailabilityPage from "./pages/Doctor/AvailabilityPage";
+
 function App() {
   return (
     <Router>
@@ -19,6 +24,10 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/videos" element={<Videos />} />
         <Route path="/articles" element={<Articles />} />
+        <Route path="/doctors" element={<Doctor />} />
+        <Route path="/doctors/all" element={<Doctors />} />
+        <Route path="/doctors/availability" element={<AvailabilityPage />} />
+        <Route path="/doctors/:id" element={<DoctorDetailPage />} />
         <Route
           path="/first-aid"
           element={

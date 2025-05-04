@@ -14,12 +14,8 @@ const Hero = () => {
       }}
     >
       <NavBar />
-<<<<<<< HEAD
-      <div className="container mx-auto text-center px-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-=======
 
       <div className="container mx-auto text-center px-4 absolute top-1/3 ">
->>>>>>> 427701f78a781b74e8b77f6196a2d5e76db2abfd
         <h1 className="text-4xl md:text-5xl font-bold mb-4">
           Empower Your Health with AI
         </h1>
@@ -27,20 +23,11 @@ const Hero = () => {
           MediHelp+ provides personalized health insights, emergency guidance, and
           daily wellness coaching—all in one platform.
         </p>
-<<<<<<< HEAD
-        <button
-          className="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-blue-100 transition"
-          aria-label="Get started with MediHelp+ for free"
-        >
-          Get Started for Free
-        </button>
-=======
         <Link to="/signup">
           <button className="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-blue-100 transition">
             Get Started for Free
           </button>
         </Link>
->>>>>>> 427701f78a781b74e8b77f6196a2d5e76db2abfd
       </div>
       {/* Popup Button */}
       <button
