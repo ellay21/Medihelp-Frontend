@@ -36,7 +36,7 @@ const Testimonials = () => {
           What Our Users Say
         </h2>
         <p className="text-gray-600 text-lg mb-12">
-          Create a visual identity for your company and an overall brand
+          We are a team of 
         </p>
         <div className="flex justify-center items-center mb-8">
           <button className="text-gray-400 hover:text-gray-600 mx-2">

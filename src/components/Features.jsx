@@ -1,7 +1,7 @@
 import React from 'react';
-import illustrationImage from '../assets/about.jpg'; // Hero illustration
-import teamIllustration from '../assets/about.jpg'; // Team illustration for "Who We Are"
-import phoneGraphic from '../assets/about.jpg'; // Phone graphic for "Who We Are"
+import illustrationImage from '../assets/about.png'; // Hero illustration
+import teamIllustration from '../assets/about3.png'; // Team illustration for "Who We Are"
+import phoneGraphic from '../assets/about.png'; // Phone graphic for "Who We Are"
 import { Link } from "react-router-dom";
 import { FaHeartbeat, FaCamera, FaExclamationTriangle, FaBook, FaStethoscope, FaMapPin, FaComments } from "react-icons/fa";
 
