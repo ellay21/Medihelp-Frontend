@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaBars, FaChevronDown } from "react-icons/fa";
 import { useState } from "react";
+import { FaSun } from "react-icons/fa"; // Added for the theme toggle icon
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,7 +9,7 @@ const NavBar = () => {
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
-    setIsServicesOpen(false); 
+    setIsServicesOpen(false);
   };
 
   const toggleServices = () => {
@@ -21,27 +22,41 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="absolute top-0 left-0 w-full shadow-md z-10 bg-blue-600">
+    <nav className="absolute top-0 left-0 w-full shadow-md z-10 bg-white border-b-2 border-cyan-500">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <div className="text-xl font-bold text-white">MediHelp+</div>
+        <div className="flex items-center space-x-1">
+          <svg
+            className="w-6 h-6 text-cyan-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+            />
+          </svg>
+          <span className="text-xl font-semibold text-gray-800">MediHelp</span>
+        </div>
 
         <div className="md:hidden">
-          <button onClick={toggleMenu} className="text-white focus:outline-none">
+          <button onClick={toggleMenu} className="text-gray-600 focus:outline-none">
             <FaBars className="text-2xl" />
           </button>
         </div>
-        <div className="hidden md:flex space-x-6 items-center">
-          <Link to="/" className="text-white hover:text-blue-200">
+
+        <div className="hidden md:flex space-x-4 items-center">
+          <Link to="/" className="text-gray-600 hover:text-cyan-500">
             Home
-          </Link>
-          <Link to="/about" className="text-white hover:text-blue-200">
-            About Us
           </Link>
 
           <div className="relative">
             <button
               onClick={toggleServices}
-              className="text-white hover:text-blue-200 flex items-center space-x-1 focus:outline-none"
+              className="text-gray-600 hover:text-cyan-500 flex items-center space-x-1 focus:outline-none"
             >
               <span>Services</span>
               <FaChevronDown
@@ -51,65 +66,69 @@ const NavBar = () => {
             {isServicesOpen && (
               <div className="absolute top-full left-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-lg">
                 <Link
-                  to="/articles"
-                  className="block px-4 py-2 hover:bg-blue-100 text-blue-600 hover:text-blue-800"
+                  to="/symptom-checker"
+                  className="block px-4 py-2 hover:bg-cyan-100 text-gray-600 hover:text-cyan-500"
                   onClick={() => setIsServicesOpen(false)}
                 >
-                  Articles
+                  Symptom Checker
                 </Link>
                 <Link
-                  to="/videos"
-                  className="block px-4 py-2 hover:bg-blue-100 text-blue-600 hover:text-blue-800"
+                  to="/skin-diagnosis"
+                  className="block px-4 py-2 hover:bg-cyan-100 text-gray-600 hover:text-cyan-500"
                   onClick={() => setIsServicesOpen(false)}
                 >
-                  Videos
+                  Skin Diagnosis
                 </Link>
-                {localStorage.getItem("token") && (
-                  <>
-                    <Link
-                      to="/symptom-checker"
-                      className="block px-4 py-2 hover:bg-blue-100 text-blue-600 hover:text-blue-800"
-                      onClick={() => setIsServicesOpen(false)}
-                    >
-                      Symptom Checker
-                    </Link>
-                    <Link
-                      to="/first-aid"
-                      className="block px-4 py-2 hover:bg-blue-100 text-blue-600 hover:text-blue-800"
-                      onClick={() => setIsServicesOpen(false)}
-                    >
-                      First Aid
-                    </Link>
-                    <Link
-                      to="/skin-diagnosis"
-                      className="block px-4 py-2 hover:bg-blue-100 text-blue-600 hover:text-blue-800"
-                      onClick={() => setIsServicesOpen(false)}
-                    >
-                      Skin-Diagnosis
-                    </Link>
-                  </>
-                )}
+                <Link
+                  to="/first-aid"
+                  className="block px-4 py-2 hover:bg-cyan-100 text-gray-600 hover:text-cyan-500"
+                  onClick={() => setIsServicesOpen(false)}
+                >
+                  First Aid
+                </Link>
+                <Link
+                  to="/education"
+                  className="block px-4 py-2 hover:bg-cyan-100 text-gray-600 hover:text-cyan-500"
+                  onClick={() => setIsServicesOpen(false)}
+                >
+                  Education
+                </Link>
               </div>
             )}
           </div>
 
-          
-          <Link to="/contact" className="text-white hover:text-blue-200">
-            Contact Us
+          <Link to="/find-doctor" className="text-gray-600 hover:text-cyan-500">
+            Find Doctor
           </Link>
+          <Link to="/find-clinic" className="text-gray-600 hover:text-cyan-500">
+            Find Clinic
+          </Link>
+          <Link to="/appointments" className="text-gray-600 hover:text-cyan-500">
+            Appointments
+          </Link>
+
+          <button className="text-gray-600 hover:text-cyan-500">
+            <FaSun className="text-xl" />
+          </button>
+
           {localStorage.getItem("token") ? (
             <button
               onClick={handleLogout}
-              className="bg-white text-blue-600 px-4 py-2 rounded-full hover:bg-blue-100 transition"
+              className="text-gray-600 hover:text-cyan-500 px-4 py-2 transition"
             >
-              Logout
+              Log out
             </button>
           ) : (
-            <Link to="/signup">
-              <button className="bg-white text-blue-600 px-4 py-2 rounded-full hover:bg-blue-100 transition">
-                Sign Up
-              </button>
-            </Link>
+            <>
+              <Link to="/login" className="text-gray-600 hover:text-cyan-500">
+                Log in
+              </Link>
+              <Link to="/signup">
+                <button className="bg-cyan-500 text-white px-4 py-2 rounded-md hover:bg-cyan-600 transition">
+                  Sign up
+                </button>
+              </Link>
+            </>
           )}
         </div>
       </div>
@@ -119,23 +138,16 @@ const NavBar = () => {
           <div className="flex flex-col items-center space-y-4 py-4">
             <Link
               to="/"
-              className="text-blue-600 hover:text-blue-800"
+              className="text-gray-600 hover:text-cyan-500"
               onClick={toggleMenu}
             >
               Home
-            </Link>
-            <Link
-              to="/about"
-              className="text-blue-600 hover:text-blue-800"
-              onClick={toggleMenu}
-            >
-              About Us
             </Link>
 
             <div className="w-full text-center">
               <button
                 onClick={toggleServices}
-                className="text-blue-600 hover:text-blue-800 flex items-center justify-center space-x-1 w-full focus:outline-none"
+                className="text-gray-600 hover:text-cyan-500 flex items-center justify-center space-x-1 w-full focus:outline-none"
               >
                 <span>Services</span>
                 <FaChevronDown
@@ -145,72 +157,84 @@ const NavBar = () => {
               {isServicesOpen && (
                 <div className="flex flex-col mt-2 space-y-2">
                   <Link
-                    to="/articles"
-                    className="text-blue-600 hover:text-blue-800 px-4 py-2"
+                    to="/symptom-checker"
+                    className="text-gray-600 hover:text-cyan-500 px-4 py-2"
                     onClick={toggleMenu}
                   >
-                    Articles
+                    Symptom Checker
                   </Link>
                   <Link
-                    to="/videos"
-                    className="text-blue-600 hover:text-blue-800 px-4 py-2"
+                    to="/skin-diagnosis"
+                    className="text-gray-600 hover:text-cyan-500 px-4 py-2"
                     onClick={toggleMenu}
                   >
-                    Videos
+                    Skin Diagnosis
                   </Link>
-                  {localStorage.getItem("token") && (
-                    <>
-                      <Link
-                        to="/symptom-checker"
-                        className="text-blue-600 hover:text-blue-800 px-4 py-2"
-                        onClick={toggleMenu}
-                      >
-                        Symptom Checker
-                      </Link>
-                      <Link
-                        to="/first-aid"
-                        className="text-blue-600 hover:text-blue-800 px-4 py-2"
-                        onClick={toggleMenu}
-                      >
-                        First Aid
-                      </Link>
-                      <Link
-                      to="/skin-diagnosis"
-                      className="block px-4 py-2 hover:bg-blue-100 text-blue-600 hover:text-blue-800"
-                      onClick={() => setIsServicesOpen(false)}
-                    >
-                      Skin-Diagnosis
-                    </Link>
-                    </>
-                  )}
+                  <Link
+                    to="/first-aid"
+                    className="text-gray-600 hover:text-cyan-500 px-4 py-2"
+                    onClick={toggleMenu}
+                  >
+                    First Aid
+                  </Link>
+                  <Link
+                    to="/education"
+                    className="text-gray-600 hover:text-cyan-500 px-4 py-2"
+                    onClick={toggleMenu}
+                  >
+                    Education
+                  </Link>
                 </div>
               )}
             </div>
 
-            
             <Link
-              to="/contact"
-              className="text-blue-600 hover:text-blue-800"
+              to="/find-doctor"
+              className="text-gray-600 hover:text-cyan-500"
               onClick={toggleMenu}
             >
-              Contact Us
+              Find Doctor
             </Link>
+            <Link
+              to="/find-clinic"
+              className="text-gray-600 hover:text-cyan-500"
+              onClick={toggleMenu}
+            >
+              Find Clinic
+            </Link>
+            <Link
+              to="/appointments"
+              className="text-gray-600 hover:text-cyan-500"
+              onClick={toggleMenu}
+            >
+              Appointments
+            </Link>
+
             {localStorage.getItem("token") ? (
               <button
                 onClick={() => {
                   handleLogout();
                   toggleMenu();
                 }}
-                className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition"
+                className="text-gray-600 hover:text-cyan-500 px-4 py-2 transition"
               >
-                Logout
+                Log out
               </button>
             ) : (
-              <Link to="/signup" onClick={toggleMenu}>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition">
-                  Sign Up
-                </button>
-              </Link>
+              <>
+                <Link
+                  to="/login"
+                  className="text-gray-600 hover:text-cyan-500"
+                  onClick={toggleMenu}
+                >
+                  Log in
+                </Link>
+                <Link to="/signup" onClick={toggleMenu}>
+                  <button className="bg-cyan-500 text-white px-4 py-2 rounded-md hover:bg-cyan-600 transition">
+                    Sign up
+                  </button>
+                </Link>
+              </>
             )}
           </div>
         </div>
