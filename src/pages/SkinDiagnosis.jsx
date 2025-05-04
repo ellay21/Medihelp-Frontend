@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
 import { uploadSkinDiagnosis } from "../services/api";
+import { FiUpload } from "react-icons/fi"; // Import the upload icon
 
 const SkinDiagnosis = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -66,19 +67,38 @@ const SkinDiagnosis = () => {
   };
 
   if (!localStorage.getItem("token"))
-    return <div className="text-center text-red-600">Please log in to use Skin Diagnosis.</div>;
+    return (
+      <div className="text-center text-red-600">
+        Please log in to use Skin Diagnosis.
+      </div>
+    );
 
   return (
     <>
       <NavBar />
+      <header className="text-center py-6 mt-15 flex flex-col justify-center items-center ">
+      <h2 className="text-3xl font-bold text-blue-700 mb-6 text-center">
+         Ai Skin Diagnosis Tool
+        </h2>
+        <p className="mt-2 text-lg text-center max-w-2/3">
+          Welcome to our advanced skin diagnosis tool. Upload an image of your
+          skin to receive a detailed analysis, including potential conditions,
+          urgency levels, and personalized recommendations. Ensure your image is
+          clear and well-lit for the best results.
+        </p>
+      </header>
       <div className="container mx-auto p-4">
-        <h2 className="text-3xl font-bold text-blue-700 mb-6 text-center">Skin Diagnosis</h2>
+        
 
         {/* Credit Display */}
         <div className="max-w-md mx-auto mb-6 p-4 bg-white rounded-lg shadow-md border border-gray-200">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-gray-700">Free Credits Remaining</span>
-            <span className="text-xl font-semibold text-blue-600">{credits}</span>
+            <span className="text-sm font-medium text-gray-700">
+              Free Credits Remaining
+            </span>
+            <span className="text-xl font-semibold text-blue-600">
+              {credits}
+            </span>
           </div>
           <div className="mt-2 h-2 bg-gray-200 rounded-full overflow-hidden">
             <div
@@ -105,25 +125,39 @@ const SkinDiagnosis = () => {
 
         {/* Upload Form */}
         <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6 border border-blue-100">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">Upload Skin Image</h3>
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">
+            Upload Skin Image
+          </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                disabled={credits < 10 || loading}
-              />
-              {error && (
-                <p className="text-red-600 text-sm mt-2">{error}</p>
-              )}
+              <label
+                className={`flex items-center justify-center w-full px-4 py-2 border rounded-md cursor-pointer ${
+                  credits < 10 || loading
+                    ? "bg-gray-200 cursor-not-allowed"
+                    : "bg-gray-50 hover:bg-gray-100 focus:ring-2 focus:ring-blue-600"
+                } transition-colors`}
+              >
+                <FiUpload className="mr-2 text-blue-600" size={20} />
+                <span className="text-gray-700">
+                  {selectedFile ? selectedFile.name : "Choose an image"}
+                </span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="hidden"
+                  disabled={credits < 10 || loading}
+                />
+              </label>
+              {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
             </div>
             <button
               type="submit"
               disabled={loading || credits < 10}
               className={`w-full px-6 py-2 rounded-full font-semibold text-white ${
-                loading || credits < 10 ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"
+                loading || credits < 10
+                  ? "bg-blue-400"
+                  : "bg-blue-600 hover:bg-blue-700"
               } transition-colors`}
             >
               {loading ? "Analyzing..." : "Submit"}
@@ -135,14 +169,17 @@ const SkinDiagnosis = () => {
         {showPaymentModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 max-w-sm w-full">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Upgrade Package</h3>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">
+                Upgrade Package
+              </h3>
               <p className="text-gray-600 mb-4">
-                Select a payment method to purchase more credits (Fake payment simulation).
+                Select a payment method to purchase more credits (Fake payment
+                simulation).
               </p>
               <div className="space-y-4">
                 <label className="flex items-center space-x-2">
                   <input
-                    type="radio"
+                    type="file"
                     name="paymentMethod"
                     value="credit-card"
                     checked={selectedPaymentMethod === "credit-card"}
@@ -176,7 +213,9 @@ const SkinDiagnosis = () => {
                 <button
                   onClick={handlePayment}
                   className={`px-4 py-2 rounded-lg text-white flex items-center space-x-2 ${
-                    paymentProcessing ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"
+                    paymentProcessing
+                      ? "bg-blue-400"
+                      : "bg-blue-600 hover:bg-blue-700"
                   } transition-colors`}
                   disabled={paymentProcessing}
                 >
@@ -216,7 +255,9 @@ const SkinDiagnosis = () => {
         {/* Diagnosis Result */}
         {diagnosis && (
           <div className="mt-8 p-6 bg-white shadow-lg rounded-lg border border-blue-100">
-            <h3 className="text-2xl font-bold text-blue-700 mb-4">Diagnosis Result</h3>
+            <h3 className="text-2xl font-bold text-blue-700 mb-4">
+              Diagnosis Result
+            </h3>
             <div className="space-y-6">
               <div>
                 <h4 className="text-lg font-semibold text-gray-800">Image</h4>
@@ -227,10 +268,14 @@ const SkinDiagnosis = () => {
                 />
               </div>
               <div>
-                <h4 className="text-lg font-semibold text-gray-800">Conditions</h4>
+                <h4 className="text-lg font-semibold text-gray-800">
+                  Conditions
+                </h4>
                 <ul className="list-disc list-inside text-gray-600 mt-2 space-y-2">
                   {diagnosis.diagnosis.conditions.map((condition, index) => (
-                    <li key={index} className="font-medium text-gray-800">{condition}</li>
+                    <li key={index} className="font-medium text-gray-800">
+                      {condition}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -255,7 +300,9 @@ const SkinDiagnosis = () => {
                 </p>
               </div>
               <div>
-                <h4 className="text-md font-medium text-gray-700 mt-4">Recommendations:</h4>
+                <h4 className="text-md font-medium text-gray-700 mt-4">
+                  Recommendations:
+                </h4>
                 <ul className="list-disc list-inside text-gray-600 mt-2 space-y-1">
                   {diagnosis.diagnosis.recommendations.map((rec, index) => (
                     <li key={index}>{rec}</li>
