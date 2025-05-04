@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 const CTA = () => {
   return (
     <div className="bg-blue-500 text-white py-20">
@@ -8,9 +9,11 @@ const CTA = () => {
         <p className="text-lg mb-8">
           Sign up now and get your first health assessment free.
         </p>
-        <button className="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-blue-100 transition">
-          Create Your Account
-        </button>
+        <Link to="/signup">
+          <button className="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-blue-100 transition">
+            Create Your Account
+          </button>
+        </Link>
       </div>
     </div>
   );
