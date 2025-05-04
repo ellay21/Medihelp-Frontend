@@ -11,6 +11,8 @@ import SymptomList from "./pages/SymptomChecker";
 import Home from "./pages/Home";
 import SkinDiagnosis from "./pages/SkinDiagnosis";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import FindDoctor from "./pages/FindDoctor";
+
 function App() {
   return (
     <Router>
@@ -34,6 +36,14 @@ function App() {
           element={
             <ProtectedRoute>
               <SymptomList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/find-doctor"
+          element={
+            <ProtectedRoute>
+              <FindDoctor />
             </ProtectedRoute>
           }
         />

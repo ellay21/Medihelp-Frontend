@@ -10,17 +10,17 @@ const Home = () => {
   const content = {
     about: {
       hero: {
-        title: 'Your Health, Our Priority:',
-        subtitle: 'Expert Medical Care at Your Fingertips',
-        description: 'MediHelp+ provides personalized healthcare solutions, connecting you with professionals for teleconsultations and first aid guidance.',
-        ctaButtonText: 'Book a Consultation',
-        ctaLink: '/find-doctor',
+        title: 'Turn Your Vision into Reality:',
+        subtitle: 'Expert Product Development for Startups & Businesses',
+        description: 'We specialize in helping startups and businesses navigate the critical 0-to-1 phase of product development—from concept to initial market traction.',
+        ctaButtonText: 'Get Free Consultation',
+        ctaLink: '/consultation',
       },
       whoWeAre: {
         title: 'Connect With Top Doctors',
         description: ' We are a dedicated group of healthcare professionals committed to providing exceptional medical services.    Our team includes specialists across various fields, ensuring comprehensive care tailored to your needs.  With expertise in cardiology, dermatology, neurology, and general practice, we are here to support your health journey every step of the way.',
-        buttonText: 'Find Doctors Now',
-        buttonLink: '/find-doctor',
+        buttonText: 'more information',
+        buttonLink: '/about-us',
       },
     },
     howWeHelp: {
