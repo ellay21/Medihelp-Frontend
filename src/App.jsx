@@ -12,6 +12,7 @@ import Home from "./pages/Home";
 import SkinDiagnosis from "./pages/SkinDiagnosis";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import FindDoctor from "./pages/FindDoctor";
+import Dashboard from "./pages/DashBoard";
 
 function App() {
   return (
@@ -52,6 +53,14 @@ function App() {
           element={
             <ProtectedRoute>
               <SkinDiagnosis />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
             </ProtectedRoute>
           }
         />

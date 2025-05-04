@@ -252,7 +252,7 @@ const FirstAidList = () => {
                 Connect with healthcare professionals for personalized advice.
               </p>
               <button
-                onClick={() => navigate("/doctors")}
+                onClick={() => navigate("/find-doctor")}
                 className="w-full md:w-auto px-6 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
               >
                 Find a Doctor

@@ -136,7 +136,7 @@ const Home = () => {
                   {section.description}
                 </p>
                 <Link to={section.buttonLink}>
-                  <button className="mt-4 w-full border border-blue-600 text-blue-600 px-4 py-2 rounded-md hover:bg-blue-50 transition">
+                  <button className="mt-4 w-full border cursor-pointer border-blue-600 text-blue-600 px-4 py-2 rounded-md hover:bg-blue-50 transition">
                     {section.buttonText}
                   </button>
                 </Link>

@@ -17,7 +17,9 @@ const Login = () => {
 
     try {
       const response = await login(formData);
+
       localStorage.setItem("token", response.data.tokens.access);
+      
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.error || "Login failed");
@@ -51,7 +53,9 @@ const Login = () => {
             <input
               type="email"
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
               required
             />
@@ -63,7 +67,9 @@ const Login = () => {
             <input
               type="password"
               value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
               required
             />
@@ -74,7 +80,9 @@ const Login = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className={`w-full py-3 rounded-lg font-semibold text-white transition-colors ${
-              loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+              loading
+                ? "bg-blue-400 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
             }`}
           >
             {loading ? <Loader2 className="animate-spin mx-auto" /> : "Login"}
@@ -82,7 +90,10 @@ const Login = () => {
         </form>
         <p className="mt-4 text-center text-gray-600">
           Don’t have an account?{" "}
-          <Link to="/signup" className="text-blue-600 hover:underline transition">
+          <Link
+            to="/signup"
+            className="text-blue-600 hover:underline transition"
+          >
             Sign Up
           </Link>
         </p>

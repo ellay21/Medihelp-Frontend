@@ -1,24 +1,35 @@
 import { Link } from "react-router-dom";
 import { FaBars, FaChevronDown } from "react-icons/fa";
 import { useState } from "react";
-import { FaSun } from "react-icons/fa"; // Added for the theme toggle icon
+import { FaSun } from "react-icons/fa";
+import { User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
     setIsServicesOpen(false);
+    setIsUserMenuOpen(false);
   };
 
   const toggleServices = () => {
     setIsServicesOpen(!isServicesOpen);
   };
 
+  const toggleUserMenu = () => {
+    setIsUserMenuOpen(!isUserMenuOpen);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
-    window.location.href = "/login";
+    navigate("/login");
+    setIsUserMenuOpen(false);
+    if (isOpen) toggleMenu(); // Close mobile menu if open
   };
 
   return (
@@ -100,9 +111,7 @@ const NavBar = () => {
           <Link to="/find-doctor" className="text-gray-600 hover:text-cyan-500">
             Find Doctor
           </Link>
-          <Link to="/find-clinic" className="text-gray-600 hover:text-cyan-500">
-            Find Clinic
-          </Link>
+         
           <Link to="/appointments" className="text-gray-600 hover:text-cyan-500">
             Appointments
           </Link>
@@ -112,12 +121,33 @@ const NavBar = () => {
           </button>
 
           {localStorage.getItem("token") ? (
-            <button
-              onClick={handleLogout}
-              className="text-gray-600 hover:text-cyan-500 px-4 py-2 transition"
-            >
-              Log out
-            </button>
+            <div className="relative">
+              <button
+                onClick={toggleUserMenu}
+                className="text-gray-600 hover:text-cyan-500 rounded-full focus:outline-none"
+              >
+                <User className="h-6 w-6 cursor-pointer" />
+              </button>
+              {isUserMenuOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-lg">
+                  <button
+                    onClick={() => {
+                      navigate("/dashboard");
+                      setIsUserMenuOpen(false);
+                    }}
+                    className="block w-full text-left px-4 py-2 hover:bg-cyan-100 text-gray-600 hover:text-cyan-500"
+                  >
+                    Dashboard
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 hover:bg-cyan-100 text-gray-600 hover:text-cyan-500"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <>
               <Link to="/login" className="text-gray-600 hover:text-cyan-500">
@@ -136,11 +166,7 @@ const NavBar = () => {
       {isOpen && (
         <div className="md:hidden bg-white shadow-md">
           <div className="flex flex-col items-center space-y-4 py-4">
-            <Link
-              to="/"
-              className="text-gray-600 hover:text-cyan-500"
-              onClick={toggleMenu}
-            >
+            <Link to="/" className="text-gray-600 hover:text-cyan-500" onClick={toggleMenu}>
               Home
             </Link>
 
@@ -188,45 +214,48 @@ const NavBar = () => {
               )}
             </div>
 
-            <Link
-              to="/find-doctor"
-              className="text-gray-600 hover:text-cyan-500"
-              onClick={toggleMenu}
-            >
+            <Link to="/find-doctor" className="text-gray-600 hover:text-cyan-500" onClick={toggleMenu}>
               Find Doctor
             </Link>
-            <Link
-              to="/find-clinic"
-              className="text-gray-600 hover:text-cyan-500"
-              onClick={toggleMenu}
-            >
-              Find Clinic
-            </Link>
-            <Link
-              to="/appointments"
-              className="text-gray-600 hover:text-cyan-500"
-              onClick={toggleMenu}
-            >
+            
+            <Link to="/appointments" className="text-gray-600 hover:text-cyan-500" onClick={toggleMenu}>
               Appointments
             </Link>
 
             {localStorage.getItem("token") ? (
-              <button
-                onClick={() => {
-                  handleLogout();
-                  toggleMenu();
-                }}
-                className="text-gray-600 hover:text-cyan-500 px-4 py-2 transition"
-              >
-                Log out
-              </button>
+              <div className="relative">
+                <button
+                  onClick={toggleUserMenu}
+                  className="text-gray-600 hover:text-cyan-500 rounded-full focus:outline-none"
+                >
+                  <User className="h-6 w-6 cursor-pointer" />
+                </button>
+                {isUserMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-lg">
+                    <button
+                      onClick={() => {
+                        navigate("/dashboard");
+                        toggleMenu();
+                      }}
+                      className="block w-full text-left px-4 py-2 hover:bg-cyan-100 text-gray-600 hover:text-cyan-500"
+                    >
+                      Dashboard
+                    </button>
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        toggleMenu();
+                      }}
+                      className="block w-full text-left px-4 py-2 hover:bg-cyan-100 text-gray-600 hover:text-cyan-500"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
             ) : (
               <>
-                <Link
-                  to="/login"
-                  className="text-gray-600 hover:text-cyan-500"
-                  onClick={toggleMenu}
-                >
+                <Link to="/login" className="text-gray-600 hover:text-cyan-500" onClick={toggleMenu}>
                   Log in
                 </Link>
                 <Link to="/signup" onClick={toggleMenu}>
