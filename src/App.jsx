@@ -10,6 +10,7 @@ import FirstAidList from "./pages/FirstAidList";
 import SymptomList from "./pages/SymptomChecker";
 import Home from "./pages/Home";
 import SkinDiagnosis from "./pages/SkinDiagnosis";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 function App() {
   return (
     <Router>
@@ -19,6 +20,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/videos" element={<Videos />} />
         <Route path="/articles" element={<Articles />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route
           path="/first-aid"
           element={

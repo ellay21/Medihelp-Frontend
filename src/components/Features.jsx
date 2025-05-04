@@ -9,19 +9,20 @@ const Home = () => {
   const content = {
     about: {
       hero: {
-        title: "Turn Your Vision into Reality:",
-        subtitle: "Expert Product Development for Startups & Businesses",
+        title: "Medically-Informed AI Health Guidance",
+        subtitle:
+          "Clinically-Validated Symptom Assessment for Better Health Decisions",
         description:
-          "We specialize in helping startups and businesses navigate the critical 0-to-1 phase of product development—from concept to initial market traction.",
-        ctaButtonText: "Get Free Consultation",
-        ctaLink: "/consultation",
+          "Our AI system combines medical knowledge with intelligent technology to help users understand symptoms and determine appropriate next steps - always recommending professional care when needed.",
+        ctaButtonText: "Try Health Assessment",
+        ctaLink: "/health-check",
       },
       whoWeAre: {
-        title: "Who We Are?",
+        title: "Our Medical Foundation",
         description:
-          "Pomegranate Studio is a digital product development studio and venture builder based in Helsinki, Finland. We specialize in helping startups and businesses launch innovative digital products, from initial concept to market traction. We’re experts in Telegram Mini Apps, the TON Blockchain, and the Play2Win gaming model.",
-        buttonText: "About Us",
-        buttonLink: "/about-us",
+          "We're a team of healthcare technologists and medical advisors building AI tools that augment (not replace) professional care. Our systems are developed with clinician oversight and regularly updated with the latest medical guidelines.",
+        buttonText: "Our Medical Board",
+        buttonLink: "/medical-team",
       },
     },
     howWeHelp: {
@@ -37,7 +38,7 @@ const Home = () => {
         },
         {
           title: "Voice-Guided First Aid",
-          icon: "🎙️",
+          icon: "🎙",
           description:
             "Step-by-step audio instructions for emergencies, even offline.",
           buttonText: "Learn More",
@@ -46,7 +47,8 @@ const Home = () => {
         {
           title: "Personalized Health Education",
           icon: "📚",
-          description: "Daily tips and lessons tailored to your health profile.",
+          description:
+            "Daily tips and lessons tailored to your health profile.",
           buttonText: "Learn More",
           buttonLink: "/go-to-market-strategy",
         },
@@ -64,7 +66,11 @@ const Home = () => {
   // Animation variants
   const fadeInUp = {
     hidden: { opacity: 0, y: 60 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
   };
 
   const fadeIn = {
@@ -74,12 +80,20 @@ const Home = () => {
 
   const scaleUp = {
     hidden: { opacity: 0, scale: 0.9 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: "easeOut" } },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
   };
 
   const slideInLeft = {
     hidden: { opacity: 0, x: -100 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
   };
 
   return (
@@ -102,7 +116,7 @@ const Home = () => {
               {content.about.hero.title}
             </motion.h1>
             <motion.h2
-              className="text-2xl md:text-3xl font-semibold text-purple-600 mb-4"
+              className="text-2xl md:text-3xl font-semibold text-blue-900 mb-4"
               variants={fadeInUp}
             >
               {content.about.hero.subtitle}
@@ -115,7 +129,7 @@ const Home = () => {
             </motion.p>
             <motion.a
               href={content.about.hero.ctaLink}
-              className="inline-block bg-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-purple-700 transition"
+              className="inline-block bg-blue-900 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition"
               variants={scaleUp}
               aria-label="Request a free consultation"
             >
@@ -181,7 +195,7 @@ const Home = () => {
                 <p className="text-gray-600 mb-6">{section.description}</p>
                 <a
                   href={section.buttonLink}
-                  className="inline-block bg-purple-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-purple-700 transition"
+                  className="inline-block bg-blue-900 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition"
                   aria-label={`Learn more about ${section.title}`}
                 >
                   {section.buttonText}
@@ -231,7 +245,7 @@ const Home = () => {
             </motion.p>
             <motion.a
               href={content.about.whoWeAre.buttonLink}
-              className="inline-block bg-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-purple-700 transition"
+              className="inline-block bg-blue-900 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition"
               variants={scaleUp}
               aria-label="Learn more about us"
             >
