@@ -59,7 +59,7 @@ const Home = () => {
           icon: <FaStethoscope className="h-8 w-8 text-blue-600" />,
           description: 'Connect with qualified healthcare professionals for teleconsultations.',
           buttonText: 'Find Doctors',
-          buttonLink: '/doctors',
+          buttonLink: '/doctor',
         },
         {
           title: 'Nearby Clinics',
@@ -73,7 +73,7 @@ const Home = () => {
           icon: <FaComments className="h-8 w-8 text-blue-600" />,
           description: 'Ask health-related questions anytime with SmartChat.',
           buttonText: 'Start Chatting',
-          buttonLink: '/chat',
+          buttonLink: '/symptom-checker',
         },
       ],
     },

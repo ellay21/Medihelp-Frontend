@@ -39,11 +39,16 @@ const Education = () => {
   const filteredContent = () => {
     const query = searchQuery.toLowerCase();
     if (activeTab === "articles") {
-      return articles.filter((article) =>
-        article.title.toLowerCase().includes(query) ||
-        article.summary.toLowerCase().includes(query) ||
-        (article.tags || "").toLowerCase().includes(query)
-      );
+      return articles.filter((article) => {
+        const tagsString = Array.isArray(article.tags)
+          ? article.tags.join(", ").toLowerCase()
+          : (article.tags || "").toLowerCase();
+        return (
+          article.title.toLowerCase().includes(query) ||
+          article.summary.toLowerCase().includes(query) ||
+          tagsString.includes(query)
+        );
+      });
     } else {
       return videos.filter((video) =>
         video.title.toLowerCase().includes(query) ||
@@ -113,7 +118,9 @@ const Education = () => {
                     </p>
                     <p className="text-gray-700 mb-4">{item.summary}</p>
                     {item.tags && (
-                      <p className="text-cyan-500 text-sm mb-4">{item.tags}</p>
+                      <p className="text-cyan-500 text-sm mb-4">
+                        {Array.isArray(item.tags) ? item.tags.join(", ") : item.tags}
+                      </p>
                     )}
                     <button
                       onClick={() => window.open(`/article/${item.id}`, "_blank")}
