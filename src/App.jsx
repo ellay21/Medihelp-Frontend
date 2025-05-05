@@ -22,7 +22,7 @@ import Education from "./pages/Education";
 import ViewProfile from "./pages/ViewProfile";
 import NearbyClinics from "./pages/Clinics";
 import Layout from "./Layout";
-import ContactUs from "./pages/Contactus";
+import buggy from "./pages/buggy";
 function App() {
   return (
     <Router>
