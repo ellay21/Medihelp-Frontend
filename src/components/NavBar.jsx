@@ -63,7 +63,7 @@ const NavBar = () => {
           <Link to="/" className="text-gray-600 hover:text-cyan-500">
             Home
           </Link>
-
+        
           <div className="relative">
             <button
               onClick={toggleServices}
@@ -111,7 +111,9 @@ const NavBar = () => {
           <Link to="/find-doctor" className="text-gray-600 hover:text-cyan-500">
             Find Doctor
           </Link>
-         
+          <Link to="/find-clinic" className="text-gray-600 hover:text-cyan-500">
+            Find Clinic
+          </Link>
           <Link to="/appointments" className="text-gray-600 hover:text-cyan-500">
             Appointments
           </Link>
@@ -217,7 +219,9 @@ const NavBar = () => {
             <Link to="/find-doctor" className="text-gray-600 hover:text-cyan-500" onClick={toggleMenu}>
               Find Doctor
             </Link>
-            
+            <Link to="/find-clinic" className="text-gray-600 hover:text-cyan-500">
+            Find Clinic
+          </Link>
             <Link to="/appointments" className="text-gray-600 hover:text-cyan-500" onClick={toggleMenu}>
               Appointments
             </Link>

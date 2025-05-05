@@ -25,7 +25,7 @@ const Footer = () => {
       <div className="container mx-auto text-center px-4">
         <p className="mb-4">© 2025 MediHelp+. All rights reserved.</p>
         <div className="flex justify-center gap-6">
-          <a href="#" className="hover:text-blue-400 transition">
+          <a href="/about" className="hover:text-blue-400 transition">
             About
           </a>
           <a href="#" className="hover:text-blue-400 transition">

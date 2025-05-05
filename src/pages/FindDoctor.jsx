@@ -1,61 +1,70 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import NavBar from "../components/NavBar";
 import { Search, User, Calendar } from "lucide-react";
+
+// Create an axios instance with base URL
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+});
 
 const FindDoctor = () => {
   const [doctors, setDoctors] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [specialization, setSpecialization] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // Dummy data for doctors
-  const getSampleDoctors = () => {
-    return [
-      {
-        id: 1,
-        user: { first_name: "Mohammed", last_name: "Ali" },
-        specialization: "Neurologist",
-        consultation_fee: 150,
-        license_number: "MED123456",
-        bio: "Experienced neurologist with over 10 years of practice.",
-        available: true,
-      },
-      {
-        id: 2,
-        user: { first_name: "Chere", last_name: "Lema" },
-        specialization: "Gastroenterologist",
-        consultation_fee: 150,
-        license_number: "MED789012",
-        bio: "Specializing in gastrointestinal disorders.",
-        available: true,
-      },
-      {
-        id: 3,
-        user: { first_name: "Abebe", last_name: "Kebede" },
-        specialization: "Pediatrician",
-        consultation_fee: 100,
-        license_number: "MED345678",
-        bio: "Dedicated to providing quality care for children.",
-        available: false,
-      },
-      {
-        id: 4,
-        user: { first_name: "Selam", last_name: "Tesfaye" },
-        specialization: "Cardiologist",
-        consultation_fee: 180,
-        license_number: "MED901234",
-        bio: "Specializing in heart conditions.",
-        available: true,
-      },
-    ];
-  };
-
   useEffect(() => {
-    setDoctors(getSampleDoctors());
-  }, []);
+    const fetchDoctors = async () => {
+      // Retrieve token from localStorage
+      const token = localStorage.getItem("token");
+      console.log("Retrieved token:", token); // Debug: Log the token
 
-  // Get unique specializations
+      // Redirect to login if no token is found
+      if (!token) {
+        console.log("No token found, redirecting to login");
+        navigate("/login");
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError(null);
+        const apiUrl = "/api/doctors/profiles";
+
+        const response = await api.get(apiUrl, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Handle the paginated response
+        if (response.data.results && Array.isArray(response.data.results)) {
+          setDoctors(response.data.results);
+        } else {
+          throw new Error("Unexpected response format: No 'results' array found in response data");
+        }
+      } catch (err) {
+        if (err.response?.status === 401) {
+          console.log("Unauthorized (401), clearing token and redirecting to login");
+          localStorage.removeItem("token");
+          navigate("/login");
+          setError("Session expired or invalid token. Please log in again.");
+        } else {
+          setError(err.response?.data?.message || err.message || "Failed to fetch doctors");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDoctors();
+  }, [navigate]);
+
   const specializations = [...new Set(doctors.map((doctor) => doctor.specialization))];
 
   const filteredDoctors = doctors.filter((doctor) => {
@@ -66,9 +75,17 @@ const FindDoctor = () => {
     return nameMatch && specializationMatch;
   });
 
+  if (loading) {
+    return <div className="container mx-auto py-10 text-center mt-15">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="container mx-auto py-10 text-center text-red-600 mt-15">Error: {error}</div>;
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 my-15">
-      <NavBar />
+    <div className="min-h-screen bg-gray-50 mt-15">
+      
       <div className="container mx-auto py-10">
         <div className="max-w-5xl mx-auto">
           <div className="mb-8 text-center">
@@ -158,7 +175,7 @@ const FindDoctor = () => {
                       Book Appointment
                     </button>
                     <button
-                      onClick={() => navigate(`/doctors/${doctor.id}`)}
+                      onClick={() => navigate(`/find-doctor/${doctor.id}`)}
                       className="flex-1 py-2 rounded-lg border border-blue-600 text-blue-600 hover:bg-blue-50 transition-colors"
                     >
                       View Profile

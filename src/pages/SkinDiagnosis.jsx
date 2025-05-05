@@ -135,7 +135,7 @@ const navigate = useNavigate()
   }
 
   return (
-    <div className="container py-10">
+    <div className="container py-10 mt-15">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold mb-2">Skin Condition Diagnosis</h1>

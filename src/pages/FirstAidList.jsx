@@ -72,7 +72,7 @@ const FirstAidList = () => {
 
   return (
     <div className="container py-10 mt-15">
-      <NavBar />
+      
       <div className="max-w-4xl mx-auto">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold mb-2">First Aid & Home Remedies</h1>
