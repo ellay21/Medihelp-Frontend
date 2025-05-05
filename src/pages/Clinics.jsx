@@ -17,7 +17,6 @@ const NearbyClinics = () => {
   const [filterName, setFilterName] = useState('');
   const [filterSpecialty, setFilterSpecialty] = useState('All');
 
-  // Real hospital data in Addis Ababa with images and links
   const clinics = [
     {
         id: 1,
@@ -27,7 +26,7 @@ const NearbyClinics = () => {
         location: 'Bole Sub-city, Wereda 4, Addis Ababa',
         specialty: 'General',
         feedback: 'The facility isn\'t adequate for a hospital, but the doctors are great and nurses were friendly.',
-        image: Addish,  // Matches ah.jpeg
+        image: Addish,
         link: 'http://addishiwotgeneralhospital.com'
       },
       {
@@ -38,7 +37,7 @@ const NearbyClinics = () => {
         location: 'Addis Ababa',
         specialty: 'General',
         feedback: 'As a foreigner, I had low expectations, but the service was excellent with little wait time.',
-        image: Saint,  // Matches stg.jpeg
+        image: Saint,
         link: 'http://saintgabrielgeneralhospital.com'
       },
       {
@@ -49,7 +48,7 @@ const NearbyClinics = () => {
         location: 'Gerji, Addis Ababa',
         specialty: 'General',
         feedback: 'Known for modern practices, very reliable for general surgery and orthopedics.',
-        image: Kadisco,  // Matches k.jpeg
+        image: Kadisco,
         link: 'http://www.kadcogroup.com'
       },
       {
@@ -60,7 +59,7 @@ const NearbyClinics = () => {
         location: 'Bole Sub-city, Kebele 01, Addis Ababa',
         specialty: 'Emergency Medicine',
         feedback: 'High-quality care, preferred by internationals, excellent staff.',
-        image: Nordic,  // Matches nor.jpeg
+        image: Nordic,
         link: 'http://nordicmedicalcentre.com'
       },
       {
@@ -71,7 +70,7 @@ const NearbyClinics = () => {
         location: 'Gobena Aba Tigu St, Addis Ababa',
         specialty: 'General',
         feedback: 'Service could improve, but useful for research data on diabetes.',
-        image: Tekle,  // Matches tk.jpeg
+        image: Tekle,
         link: null
       },
       {
@@ -82,7 +81,7 @@ const NearbyClinics = () => {
         location: 'Arbeynoch St, Addis Ababa',
         specialty: 'Pediatrics',
         feedback: 'Great for prenatal care, though limited specialties.',
-        image: Anania,  // Matches ana.jpeg
+        image: Anania,
         link: null
       },
       {
@@ -93,7 +92,7 @@ const NearbyClinics = () => {
         location: 'Bole Sub-city, Addis Ababa',
         specialty: 'General',
         feedback: 'Service can be disrespectful, with occasional misdiagnosis.',
-        image: Hayat,  // Matches hayat.jpeg
+        image: Hayat,
         link: 'http://hayatmcollege.com'
       },
       {
@@ -104,7 +103,7 @@ const NearbyClinics = () => {
         location: 'Addis Ababa',
         specialty: 'Cardiology',
         feedback: 'Excellent for cardiovascular care, highly specialized.',
-        image: Addisc,  // Matches ac.jpeg
+        image: Addisc,
         link: null
       },
       {
@@ -115,7 +114,7 @@ const NearbyClinics = () => {
         location: 'Piazza, Addis Ababa',
         specialty: 'Obstetrics',
         feedback: 'Affordable and accessible, great for obstetrics and gynecology.',
-        image: Yekatit,  // Matches yk.jpeg
+        image: Yekatit,
         link: null
       },
       {
@@ -126,7 +125,7 @@ const NearbyClinics = () => {
         location: 'Mozambique St, Addis Ababa',
         specialty: 'General',
         feedback: 'Poor experience with rude staff, needs better management.',
-        image: Land,  // Matches lk.jpeg
+        image: Land,
         link: 'http://landmarkhospital.et'
       },
       {
@@ -137,7 +136,7 @@ const NearbyClinics = () => {
         location: 'Addis Ababa',
         specialty: 'Orthopedics',
         feedback: 'Amazing for pediatric orthopedics, very compassionate care.',
-        image: Cure,  // Matches cur.jpeg
+        image: Cure,
         link: 'http://cure.org'
       },
       {
@@ -148,12 +147,11 @@ const NearbyClinics = () => {
         location: 'Sefere Selam, Addis Ababa',
         specialty: 'Maternity',
         feedback: 'Maternity ward is excellent, doctors are committed.',
-        image: Ethio,  // Matches rth.jpeg
+        image: Ethio,
         link: null
       }
     ];
 
-  // Star rating generator
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -166,37 +164,34 @@ const NearbyClinics = () => {
     return stars;
   };
 
-  // Filtered clinics based on name and specialty
   const filteredClinics = clinics.filter(clinic => 
     clinic.name.toLowerCase().includes(filterName.toLowerCase()) &&
     (filterSpecialty === 'All' || clinic.specialty === filterSpecialty)
   );
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
      
-      <nav className="bg-blue-500 text-white p-4">
+      <nav className="bg-blue-500 text-white dark:bg-gray-800 dark:text-white p-4">
         <div className="container mx-auto flex justify-between items-center">
           <h2 className="text-xl font-bold">MediHelp</h2>
         </div>
       </nav>
 
-      {/* Main Content */}
       <main className="container mx-auto p-6">
       <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent p-6">We are here to help.<br/> Find best Nearby Clinics</h2>
-        {/* Filter Section */}
         <div className="mb-6 flex flex-col sm:flex-row gap-4 justify-center">
           <input
             type="text"
             placeholder="Search by hospital name..."
             value={filterName}
             onChange={(e) => setFilterName(e.target.value)}
-            className="p-2 border border-gray-300 rounded-md w-full sm:w-1/3"
+            className="p-2 border border-gray-300 dark:border-gray-700 rounded-md w-full sm:w-1/3 bg-white dark:bg-gray-800 text-gray-800 dark:text-white"
           />
           <select
             value={filterSpecialty}
             onChange={(e) => setFilterSpecialty(e.target.value)}
-            className="p-2 border border-gray-300 rounded-md w-full sm:w-1/4"
+            className="p-2 border border-gray-300 dark:border-gray-700 rounded-md w-full sm:w-1/4 bg-white dark:bg-gray-800 text-gray-800 dark:text-white"
           >
             <option value="All">All Specialties</option>
             <option value="General">General</option>
@@ -209,24 +204,23 @@ const NearbyClinics = () => {
           </select>
         </div>
 
-        {/* Clinics List */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredClinics.length > 0 ? (
             filteredClinics.map(clinic => (
-              <div key={clinic.id} className="bg-white p-6 rounded-lg shadow-md">
+              <div key={clinic.id} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                 <a href={clinic.link || '#'} target="_blank" rel="noopener noreferrer">
                   <img src={clinic.image} alt={`${clinic.name} Image`} className="w-full h-32 object-cover rounded-t-md mb-4" />
                 </a>
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">{clinic.name}</h3>
-                <p className="text-gray-600 mb-1"><strong>Rating:</strong> {clinic.rating} {renderStars(clinic.rating)}</p>
-                <p className="text-gray-600 mb-1"><strong>Contact:</strong> {clinic.contact}</p>
-                <p className="text-gray-600 mb-1"><strong>Location:</strong> {clinic.location}</p>
-                <p className="text-gray-600 mb-1"><strong>Specialty:</strong> {clinic.specialty}</p>
-                <p className="text-gray-600 italic">"{clinic.feedback}"</p>
+                <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">{clinic.name}</h3>
+                <p className="text-gray-600 dark:text-gray-400 mb-1"><strong>Rating:</strong> {clinic.rating} {renderStars(clinic.rating)}</p>
+                <p className="text-gray-600 dark:text-gray-400 mb-1"><strong>Contact:</strong> {clinic.contact}</p>
+                <p className="text-gray-600 dark:text-gray-400 mb-1"><strong>Location:</strong> {clinic.location}</p>
+                <p className="text-gray-600 dark:text-gray-400 mb-1"><strong>Specialty:</strong> {clinic.specialty}</p>
+                <p className="text-gray-600 dark:text-gray-400 italic">"{clinic.feedback}"</p>
               </div>
             ))
           ) : (
-            <p className="text-center text-gray-600 col-span-full">No clinics found matching your criteria.</p>
+            <p className="text-center text-gray-600 dark:text-gray-400 col-span-full">No clinics found matching your criteria.</p>
           )}
         </div>
       </main>

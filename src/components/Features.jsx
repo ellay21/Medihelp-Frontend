@@ -80,24 +80,24 @@ const Home = () => {
   };
 
   return (
-    <div className="flex flex-col bg-gray-50 font-sans">
+    <div className="flex flex-col bg-gray-50 dark:bg-gray-900 font-sans">
       {/* About Section */}
-      <section className="flex-1 flex items-center justify-center text-left px-4 py-16 md:py-24 bg-gradient-to-r from-gray-50 to-purple-50">
+      <section className="flex-1 flex items-center justify-center text-left px-4 py-16 md:py-24 bg-gradient-to-r from-gray-50 to-purple-50 dark:from-gray-900 dark:to-purple-900">
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
           {/* Text Content */}
           <div className="md:w-1/2 mb-8 md:mb-0">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-2">
               {content.about.hero.title}
             </h1>
-            <h2 className="text-2xl md:text-3xl font-semibold text-blue-600 mb-4">
+            <h2 className="text-2xl md:text-3xl font-semibold text-blue-600 dark:text-blue-400 mb-4">
               {content.about.hero.subtitle}
             </h2>
-            <p className="text-lg text-gray-600 max-w-lg mb-6">
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-lg mb-6">
               {content.about.hero.description}
             </p>
             <a
               href={content.about.hero.ctaLink}
-              className="inline-block bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-purple-700 transition"
+              className="inline-block bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-purple-700 dark:hover:bg-purple-600 transition"
               aria-label="Request a free consultation"
             >
               {content.about.hero.ctaButtonText}
@@ -115,28 +115,28 @@ const Home = () => {
       </section>
 
       {/* How We Help Section */}
-      <section className="px-4 py-16 md:py-24 bg-gradient-to-r from-gray-50 to-purple-50">
+      <section className="px-4 py-16 md:py-24 bg-gradient-to-r from-gray-50 to-purple-50 dark:from-gray-900 dark:to-purple-900">
         <div className="container mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white text-center mb-12">
             {content.howWeHelp.title}
           </h2>
           <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3">
             {content.howWeHelp.sections.map((section, index) => (
               <div
                 key={index}
-                className="bg-white rounded-lg shadow-md p-6 flex flex-col items-start gap-4"
+                className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 flex flex-col items-start gap-4"
               >
                 <div className="flex items-center gap-4">
                   {section.icon}
-                  <h3 className="text-xl font-semibold text-gray-800">
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
                     {section.title}
                   </h3>
                 </div>
-                <p className="text-gray-600 text-base">
+                <p className="text-gray-600 dark:text-gray-300 text-base">
                   {section.description}
                 </p>
                 <Link to={section.buttonLink}>
-                  <button className="mt-4 w-full border cursor-pointer border-blue-600 text-blue-600 px-4 py-2 rounded-md hover:bg-blue-50 transition">
+                  <button className="mt-4 w-full border cursor-pointer border-blue-600 text-blue-600 dark:text-blue-400 px-4 py-2 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900 transition">
                     {section.buttonText}
                   </button>
                 </Link>
@@ -147,7 +147,7 @@ const Home = () => {
       </section>
 
       {/* Who We Are Section */}
-      <section className="flex items-center justify-center text-left px-4 py-16 md:py-24 bg-white">
+      <section className="flex items-center justify-center text-left px-4 py-16 md:py-24 bg-white dark:bg-gray-900">
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
           {/* Team Illustration */}
           <div className="md:w-1/2 flex justify-center mb-8 md:mb-0">
@@ -159,15 +159,15 @@ const Home = () => {
           </div>
           {/* Text Content */}
           <div className="md:w-1/2 relative">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               {content.about.whoWeAre.title}
             </h2>
-            <p className="text-lg text-gray-600 max-w-lg mb-6">
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-lg mb-6">
               {content.about.whoWeAre.description}
             </p>
             <a
               href={content.about.whoWeAre.buttonLink}
-              className="inline-block bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-purple-700 transition"
+              className="inline-block bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-purple-700 dark:hover:bg-purple-600 transition"
               aria-label="Learn more about us"
             >
               {content.about.whoWeAre.buttonText}

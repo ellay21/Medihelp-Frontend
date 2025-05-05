@@ -72,29 +72,28 @@ const ViewProfile = () => {
   }, [id, navigate]);
 
   if (loading) {
-    return <div className="container mx-auto py-10 text-center mt-15">Loading...</div>;
+    return <div className="container mx-auto py-10 text-center mt-15 text-gray-800 dark:text-white">Loading...</div>;
   }
 
   if (error) {
-    return <div className="container mx-auto py-10 text-center text-red-600">Error: {error}</div>;
+    return <div className="container mx-auto py-10 text-center text-red-600 dark:text-red-400">Error: {error}</div>;
   }
 
   if (!doctor) {
-    return <div className="container mx-auto py-10 text-center mt-15">Doctor not found</div>;
+    return <div className="container mx-auto py-10 text-center mt-15 text-gray-800 dark:text-white">Doctor not found</div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 mt-15">
-      
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 mt-15">
       <div className="container mt-6 mx-auto py-10">
         <button
           onClick={() => navigate("/find-doctor")}
-          className="mb-4 flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+          className="mb-4 flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-500 transition-colors"
         >
           <ArrowLeft className="h-5 w-5 mr-2" />
           Back to Find Doctors
         </button>
-        <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <div className="max-w-3xl mx-auto bg-white dark:bg-gray-800 text-gray-800 dark:text-white p-6 rounded-lg shadow-md">
           <h1 className="text-2xl font-bold mb-4">Doctor Profile</h1>
           <div className="space-y-4">
             <p><strong>ID:</strong> {doctor.id}</p>

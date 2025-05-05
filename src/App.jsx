@@ -1,9 +1,16 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
+// Styles
+import "./styles/translate.css";
+
+// Components languageselector
+import LanguageSelector from "./components/Languageselector";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+// Pages
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import About from "./pages/AboutUs";
-import ProtectedRoute from "./components/ProtectedRoute";
 import FirstAidList from "./pages/FirstAidList";
 import SymptomList from "./pages/SymptomChecker";
 import Home from "./pages/Home";
@@ -12,24 +19,30 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import FindDoctor from "./pages/FindDoctor";
 import Dashboard from "./pages/DashBoard";
 import Education from "./pages/Education";
-import Appointments from "./pages/appointments";
 import ViewProfile from "./pages/ViewProfile";
 import NearbyClinics from "./pages/Clinics";
 import Layout from "./Layout";
+
 function App() {
   return (
     <Router>
+      {/* 🌍 Language Selector always visible */}
+      <LanguageSelector />
+
       <Routes>
+        {/* Routes outside Layout */}
         <Route path="/signup" element={<Signup />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
+
+        {/* Routes inside Layout wrapper */}
         <Route element={<Layout />}>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
           <Route path="/find-doctor/:id" element={<ViewProfile />} />
-
           <Route path="/education" element={<Education />} />
-          <Route path="/appointments" element={<Appointments />} />
           <Route path="/about" element={<About />} />
+
+          {/* Protected Routes */}
           <Route
             path="/first-aid"
             element={

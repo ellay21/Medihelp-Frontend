@@ -77,30 +77,30 @@ const FirstAidList = () => {
   );
 
   return (
-    <div className="container py-10 mt-15">
+    <div className="container py-10 mt-15 bg-white text-gray-800 dark:bg-gray-900 dark:text-white">
       <NavBar />
       <div className="max-w-4xl mx-auto">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold mb-2">First Aid & Home Remedies</h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Access emergency first aid guides and home remedies for common health issues. Always seek professional
             medical help for serious conditions.
           </p>
         </div>
 
         <div className="relative mb-6">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400 dark:text-gray-500" />
           <input
             type="text"
             placeholder="Search for first aid guides or remedies..."
-            className="w-full pl-9 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+            className="w-full pl-9 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 bg-white text-gray-800 dark:bg-gray-900 dark:text-white"
             value={searchQuery}
             onChange={handleSearchChange}
           />
           {searchQuery && (
             <button
               onClick={clearSearch}
-              className="absolute right-2 cursor-pointer top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              className="absolute right-2 cursor-pointer top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
             >
               <X size={20} />
             </button>
@@ -114,7 +114,7 @@ const FirstAidList = () => {
               className={`flex items-center gap-2 px-4 py-2 rounded-md cursor-pointer transition ${
                 activeTab === "firstaid"
                   ? "bg-blue-600 text-white hover:bg-blue-700"
-                  : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                  : "bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700"
               }`}
             >
               <AlertTriangle className="h-4 w-4" /> First Aid Guides
@@ -124,7 +124,7 @@ const FirstAidList = () => {
               className={`flex items-center gap-2 px-4 py-2 rounded-md cursor-pointer transition ${
                 activeTab === "remedies"
                   ? "bg-blue-600 text-white hover:bg-blue-700"
-                  : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                  : "bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700"
               }`}
             >
               <Pill className="h-4 w-4" /> Home Remedies
@@ -135,7 +135,7 @@ const FirstAidList = () => {
         {isLoading ? (
           <div className="text-center py-12">
             <Loader2 className="animate-spin h-12 w-12 text-blue-600 mx-auto" />
-            <p className="mt-4 text-lg text-gray-600">
+            <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
               Loading {activeTab === "firstaid" ? "first aid guides" : "home remedies"}...
             </p>
           </div>
@@ -152,24 +152,24 @@ const FirstAidList = () => {
                       exit={{ opacity: 0, y: 20 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                      <div className="bg-white text-gray-800 dark:bg-gray-900 dark:text-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
                         <div className="flex justify-between items-start">
                           <h3 className="text-xl font-semibold text-blue-600">{guide.title}</h3>
                           {guide.severity_level_display && (
                             <div
                               className={`px-2 py-1 text-xs rounded-full ${
                                 guide.severity_level_display.toLowerCase() === "high"
-                                  ? "bg-red-100 text-red-800"
+                                  ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                                   : guide.severity_level_display.toLowerCase() === "medium"
-                                  ? "bg-yellow-100 text-yellow-800"
-                                  : "bg-green-100 text-green-800"
+                                  ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                                  : "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                               }`}
                             >
                               {guide.severity_level_display}
                             </div>
                           )}
                         </div>
-                        <p className="text-gray-600 mt-2">{guide.description}</p>
+                        <p className="text-gray-600 dark:text-gray-400 mt-2">{guide.description}</p>
                         <div className="mt-4">
                           <Link
                             to={`/first-aid/${guide.id}`}
@@ -195,21 +195,21 @@ const FirstAidList = () => {
                       exit={{ opacity: 0, y: 20 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                      <div className="bg-white text-gray-800 dark:bg-gray-900 dark:text-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
                         <h3 className="text-xl font-semibold text-green-600">{remedy.name}</h3>
-                        <p className="text-gray-600 mt-2">{remedy.preparation}</p>
-                        <div className="mt-2 text-gray-600">
+                        <p className="text-gray-600 dark:text-gray-400 mt-2">{remedy.preparation}</p>
+                        <div className="mt-2 text-gray-600 dark:text-gray-400">
                           <strong>Ingredients:</strong> {remedy.ingredients.join(", ")}
                         </div>
                         {remedy.symptoms.length > 0 && (
-                          <div className="mt-2 text-gray-600">
+                          <div className="mt-2 text-gray-600 dark:text-gray-400">
                             <strong>Symptoms:</strong> {remedy.symptoms.join(", ")}
                           </div>
                         )}
                         <div className="mt-4">
                           <button
                             onClick={() => navigate(`/first-aid/remedies/${remedy.id}`)}
-                            className="flex items-center justify-center w-full px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
+                            className="flex items-center justify-center w-full px-4 py-2 bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition"
                           >
                             View Remedy
                             <ArrowRight className="ml-2 h-4 w-4" />
@@ -223,14 +223,14 @@ const FirstAidList = () => {
             ) : (
               <div className="text-center py-12">
                 {activeTab === "firstaid" ? (
-                  <AlertTriangle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <AlertTriangle className="h-12 w-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
                 ) : (
-                  <Pill className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <Pill className="h-12 w-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
                 )}
                 <h3 className="text-lg font-medium mb-2">
                   No {activeTab === "firstaid" ? "guides" : "remedies"} found
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-600 dark:text-gray-400 mb-6">
                   No {activeTab === "firstaid" ? "first aid guides" : "home remedies"} match your search criteria.
                 </p>
                 {searchQuery && (
@@ -246,11 +246,11 @@ const FirstAidList = () => {
           </div>
         )}
 
-        <div className="mt-12 p-6 border rounded-lg bg-gray-50">
+        <div className="mt-12 p-6 border rounded-lg bg-gray-50 dark:bg-gray-800">
           <div className="flex flex-col md:flex-row gap-6 items-center">
             <div className="flex-1">
               <h3 className="text-xl font-bold mb-2">Emergency?</h3>
-              <p className="text-gray-600 mb-4">
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
                 If you're experiencing a medical emergency, please call emergency services immediately.
               </p>
               <button
@@ -262,12 +262,12 @@ const FirstAidList = () => {
             </div>
             <div className="flex-1">
               <h3 className="text-xl font-bold mb-2">Need Professional Help?</h3>
-              <p className="text-gray-600 mb-4">
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
                 Connect with healthcare professionals for personalized advice.
               </p>
               <button
                 onClick={() => navigate("/find-doctor")}
-                className="w-full md:w-auto px-6 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
+                className="w-full md:w-auto px-6 py-3 bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition"
               >
                 Find a Doctor
               </button>

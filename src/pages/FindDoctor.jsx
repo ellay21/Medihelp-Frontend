@@ -76,32 +76,31 @@ const FindDoctor = () => {
   });
 
   if (loading) {
-    return <div className="container mx-auto py-10 text-center mt-15">Loading...</div>;
+    return <div className="container mx-auto py-10 text-center mt-15 text-gray-800 dark:text-white">Loading...</div>;
   }
 
   if (error) {
-    return <div className="container mx-auto py-10 text-center text-red-600 mt-15">Error: {error}</div>;
+    return <div className="container mx-auto py-10 text-center text-red-600 dark:text-red-400 mt-15">Error: {error}</div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 mt-15">
-      
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 mt-15">
       <div className="container mx-auto py-10">
         <div className="max-w-5xl mx-auto">
           <div className="mb-8 text-center">
-            <h1 className="text-3xl font-bold mb-2">Find a Doctor</h1>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <h1 className="text-3xl font-bold mb-2 text-gray-800 dark:text-white">Find a Doctor</h1>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               Connect with qualified healthcare professionals for teleconsultations and get the care you need from the comfort of your home.
             </p>
           </div>
 
           <div className="flex flex-col md:flex-row gap-4 mb-8">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500" />
               <input
                 type="text"
                 placeholder="Search by doctor name..."
-                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 bg-white dark:bg-gray-900 text-gray-800 dark:text-white"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -110,7 +109,7 @@ const FindDoctor = () => {
               <select
                 value={specialization}
                 onChange={(e) => setSpecialization(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 appearance-none bg-white"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 appearance-none bg-white dark:bg-gray-900 text-gray-800 dark:text-white"
               >
                 <option value="">Specialization</option>
                 <option value="">All Specializations</option>
@@ -121,7 +120,7 @@ const FindDoctor = () => {
                 ))}
               </select>
               <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </div>
@@ -133,32 +132,32 @@ const FindDoctor = () => {
               {filteredDoctors.map((doctor) => (
                 <div
                   key={doctor.id}
-                  className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                  className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h3 className="text-xl font-semibold text-gray-800">
+                      <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
                         Dr. {doctor.user.first_name} {doctor.user.last_name}
                       </h3>
-                      <p className="text-gray-600">{doctor.specialization}</p>
+                      <p className="text-gray-600 dark:text-gray-400">{doctor.specialization}</p>
                     </div>
                     <span
                       className={`px-2 py-1 text-xs rounded-full ${
                         doctor.available
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
+                          ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
+                          : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
                       }`}
                     >
                       {doctor.available ? "Available" : "Unavailable"}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="bg-blue-100 p-2 rounded-full">
-                      <User className="h-6 w-6 text-blue-600" />
+                    <div className="bg-blue-100 dark:bg-blue-900 p-2 rounded-full">
+                      <User className="h-6 w-6 text-blue-600 dark:text-blue-300" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-700">Consultation Fee</p>
-                      <p className="text-sm text-gray-600">${doctor.consultation_fee}</p>
+                      <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Consultation Fee</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">${doctor.consultation_fee}</p>
                     </div>
                   </div>
                   <div className="flex gap-2">
@@ -166,8 +165,8 @@ const FindDoctor = () => {
                       onClick={() => navigate(`/doctors/${doctor.id}/book`)}
                       className={`flex-1 py-2 rounded-lg font-semibold text-white transition-colors ${
                         doctor.available
-                          ? "bg-blue-600 hover:bg-blue-700"
-                          : "bg-gray-400 cursor-not-allowed"
+                          ? "bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+                          : "bg-gray-400 dark:bg-gray-700 cursor-not-allowed"
                       }`}
                       disabled={!doctor.available}
                     >
@@ -176,7 +175,7 @@ const FindDoctor = () => {
                     </button>
                     <button
                       onClick={() => navigate(`/find-doctor/${doctor.id}`)}
-                      className="flex-1 py-2 rounded-lg border border-blue-600 text-blue-600 hover:bg-blue-50 transition-colors"
+                      className="flex-1 py-2 rounded-lg border border-blue-600 text-blue-600 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900 transition-colors"
                     >
                       View Profile
                     </button>
@@ -186,8 +185,8 @@ const FindDoctor = () => {
             </div>
           ) : (
             <div className="text-center py-12">
-              <h3 className="text-lg font-medium mb-2">No doctors found</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className="text-lg font-medium mb-2 text-gray-800 dark:text-white">No doctors found</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
                 No doctors match your search criteria. Try adjusting your filters.
               </p>
               {(searchQuery || specialization) && (
@@ -196,7 +195,7 @@ const FindDoctor = () => {
                     setSearchQuery("");
                     setSpecialization("");
                   }}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                  className="px-4 py-2 bg-blue-600 dark:bg-blue-700 text-white rounded-md hover:bg-blue-700 dark:hover:bg-blue-800 transition"
                 >
                   Clear Filters
                 </button>
@@ -204,14 +203,14 @@ const FindDoctor = () => {
             </div>
           )}
 
-          <div className="mt-12 p-6 border rounded-lg bg-gray-100 text-center">
-            <h3 className="text-xl font-bold mb-2">Are you a healthcare professional?</h3>
-            <p className="text-gray-600 mb-4 max-w-lg mx-auto">
+          <div className="mt-12 p-6 border rounded-lg bg-gray-100 dark:bg-gray-800 text-center">
+            <h3 className="text-xl font-bold mb-2 text-gray-800 dark:text-white">Are you a healthcare professional?</h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-4 max-w-lg mx-auto">
               Join our platform to connect with patients and offer teleconsultations.
             </p>
             <button
               onClick={() => navigate("/register-doctor")}
-              className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+              className="px-6 py-3 bg-blue-600 dark:bg-blue-700 text-white rounded-md hover:bg-blue-700 dark:hover:bg-blue-800 transition"
             >
               Register as a Doctor
             </button>

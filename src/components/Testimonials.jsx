@@ -30,16 +30,16 @@ const Testimonials = () => {
   ];
 
   return (
-    <div className="py-20 bg-gray-50">
+    <div className="py-20 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4 text-center">
-        <h2 className="text-4xl font-bold text-gray-900 mb-4">
+        <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
           What Our Users Say
         </h2>
-        <p className="text-gray-600 text-lg mb-12">
+        <p className="text-gray-600 dark:text-gray-400 text-lg mb-12">
           We are a team of 
         </p>
         <div className="flex justify-center items-center mb-8">
-          <button className="text-gray-400 hover:text-gray-600 mx-2">
+          <button className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 mx-2">
             <svg
               className="w-6 h-6"
               fill="none"
@@ -54,7 +54,7 @@ const Testimonials = () => {
               />
             </svg>
           </button>
-          <button className="text-gray-400 hover:text-gray-600 mx-2">
+          <button className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 mx-2">
             <svg
               className="w-6 h-6"
               fill="none"
@@ -74,17 +74,17 @@ const Testimonials = () => {
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
-              className="bg-white p-6 rounded-lg shadow-md text-left border border-gray-200 relative"
+              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-left border border-gray-200 dark:border-gray-700 relative"
             >
               <div className="flex items-center mb-4">
                 <img
                   src={testimonial.image}
                   alt={testimonial.author}
-                  className="w-32 h-32 rounded-full object-cover mr-4 -mt-16 border-4 border-white shadow-md"
+                  className="w-32 h-32 rounded-full object-cover mr-4 -mt-16 border-4 border-white dark:border-gray-800 shadow-md"
                 />
                 <div>
-                  <p className="font-semibold text-gray-900">{testimonial.author}</p>
-                  <p className="text-gray-500 text-sm">{testimonial.role}</p>
+                  <p className="font-semibold text-gray-900 dark:text-white">{testimonial.author}</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm">{testimonial.role}</p>
                 </div>
               </div>
               <div className="flex mb-2">
@@ -99,7 +99,7 @@ const Testimonials = () => {
                   </svg>
                 ))}
               </div>
-              <p className="text-gray-600 italic">"{testimonial.quote}"</p>
+              <p className="text-gray-600 dark:text-gray-400 italic">"{testimonial.quote}"</p>
             </div>
           ))}
         </div>

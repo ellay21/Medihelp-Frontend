@@ -118,7 +118,7 @@ const Dashboard = () => {
       <div className="container flex items-center justify-center min-h-[calc(100vh-8rem)]">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-lg text-gray-600">Loading...</p>
+          <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">Loading...</p>
         </div>
       </div>
     );
@@ -131,7 +131,7 @@ const Dashboard = () => {
   return (
     <div className="container py-10 mt-15 ml-3">
       <NavBar />
-      <h1 className="text-3xl font-bold mb-6">Welcome, {user.first_name}!</h1>
+      <h1 className="text-3xl font-bold mb-6 dark:text-white">Welcome, {user.first_name}!</h1>
 
       <div className="mb-6">
         <div className="grid grid-cols-3 gap-2">
@@ -140,7 +140,7 @@ const Dashboard = () => {
             className={`px-4 py-2 rounded-md transition ${
               activeTab === "overview"
                 ? "bg-blue-600 text-white hover:bg-blue-700"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
             }`}
           >
             Overview
@@ -150,7 +150,7 @@ const Dashboard = () => {
             className={`px-4 py-2 rounded-md transition ${
               activeTab === "health-records"
                 ? "bg-blue-600 text-white hover:bg-blue-700"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
             }`}
           >
             Health Records
@@ -160,7 +160,7 @@ const Dashboard = () => {
             className={`px-4 py-2 rounded-md transition ${
               activeTab === "appointments"
                 ? "bg-blue-600 text-white hover:bg-blue-700"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
             }`}
           >
             Appointments
@@ -177,12 +177,12 @@ const Dashboard = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
                   <div className="flex items-center gap-4 mb-4">
                     <Activity className="h-8 w-8 text-blue-600" />
                     <div>
-                      <h3 className="text-xl font-semibold">Symptom Checker</h3>
-                      <p className="text-gray-600">Check your symptoms</p>
+                      <h3 className="text-xl font-semibold dark:text-white">Symptom Checker</h3>
+                      <p className="text-gray-600 dark:text-gray-400">Check your symptoms</p>
                     </div>
                   </div>
                   <button
@@ -199,17 +199,17 @@ const Dashboard = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.1 }}
               >
-                <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
                   <div className="flex items-center gap-4 mb-4">
                     <AlertTriangle className="h-8 w-8 text-blue-600" />
                     <div>
-                      <h3 className="text-xl font-semibold">First Aid</h3>
-                      <p className="text-gray-600">Access emergency guides</p>
+                      <h3 className="text-xl font-semibold dark:text-white">First Aid</h3>
+                      <p className="text-gray-600 dark:text-gray-400">Access emergency guides</p>
                     </div>
                   </div>
                   <button
                     onClick={() => navigate("/first-aid")}
-                    className="w-full py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
+                    className="w-full py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
                   >
                     View Guides
                   </button>
@@ -221,17 +221,17 @@ const Dashboard = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.2 }}
               >
-                <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
                   <div className="flex items-center gap-4 mb-4">
                     <Stethoscope className="h-8 w-8 text-blue-600" />
                     <div>
-                      <h3 className="text-xl font-semibold">Find Doctors</h3>
-                      <p className="text-gray-600">Book a consultation</p>
+                      <h3 className="text-xl font-semibold dark:text-white">Find Doctors</h3>
+                      <p className="text-gray-600 dark:text-gray-400">Book a consultation</p>
                     </div>
                   </div>
                   <button
                     onClick={() => navigate("/doctors")}
-                    className="w-full py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
+                    className="w-full py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
                   >
                     Find Doctors
                   </button>
@@ -239,13 +239,13 @@ const Dashboard = () => {
               </motion.div>
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold mb-4">Recent Health Checks</h3>
-              <p className="text-gray-600 mb-4">Your recent symptom checks and results</p>
+            <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold mb-4 dark:text-white">Recent Health Checks</h3>
+              <p className="text-gray-600 mb-4 dark:text-gray-400">Your recent symptom checks and results</p>
               {isLoadingChecks ? (
                 <div className="text-center py-6">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                  <p className="mt-2 text-gray-600">Loading your health checks...</p>
+                  <p className="mt-2 text-gray-600 dark:text-gray-400">Loading your health checks...</p>
                 </div>
               ) : symptomChecks.length > 0 ? (
                 <div className="space-y-4">
@@ -255,26 +255,26 @@ const Dashboard = () => {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="flex items-start gap-4 p-4 bg-gray-50 rounded-md"
+                      className="flex items-start gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-md"
                     >
-                      <div className="bg-blue-100 p-2 rounded-full">
+                      <div className="bg-blue-100 dark:bg-blue-900 p-2 rounded-full">
                         <Activity className="h-5 w-5 text-blue-600" />
                       </div>
                       <div className="flex-1">
                         <div className="flex justify-between items-start">
                           <div>
-                            <h4 className="font-medium">Health Check #{check.id}</h4>
-                            <p className="text-sm text-gray-600">
+                            <h4 className="font-medium dark:text-white">Health Check #{check.id}</h4>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
                               Symptoms: {check.symptomNames.join(", ")}
                             </p>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
                               Conditions: {check.conditions.length > 0 ? check.conditions.map(c => c.name).join(", ") : "None"}
                             </p>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
                               Urgency: {check.diagnosis.urgency}
                             </p>
                           </div>
-                          <div className="text-sm text-gray-500">
+                          <div className="text-sm text-gray-500 dark:text-gray-400">
                             <Clock className="h-3 w-3 mr-1 inline" />
                             {new Date(check.created_at).toLocaleDateString()}
                           </div>
@@ -292,7 +292,7 @@ const Dashboard = () => {
                     <div className="text-center mt-4">
                       <button
                         onClick={() => setActiveTab("health-records")}
-                        className="text-blue-600 hover:underline"
+                        className="text-blue-600 hover:underline dark:text-blue-400"
                       >
                         View all health checks
                       </button>
@@ -301,7 +301,7 @@ const Dashboard = () => {
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-gray-600 mb-4">You haven't performed any symptom checks yet.</p>
+                  <p className="text-gray-600 mb-4 dark:text-gray-400">You haven't performed any symptom checks yet.</p>
                   <button
                     onClick={() => navigate("/symptom-checker")}
                     className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
@@ -315,13 +315,13 @@ const Dashboard = () => {
         )}
 
         {activeTab === "health-records" && (
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4">Your Health Records</h3>
-            <p className="text-gray-600 mb-4">View all your symptom checks and health data</p>
+          <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-4 dark:text-white">Your Health Records</h3>
+            <p className="text-gray-600 mb-4 dark:text-gray-400">View all your symptom checks and health data</p>
             {isLoadingChecks ? (
               <div className="text-center py-6">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                <p className="mt-2 text-gray-600">Loading your health records...</p>
+                <p className="mt-2 text-gray-600 dark:text-gray-400">Loading your health records...</p>
               </div>
             ) : symptomChecks.length > 0 ? (
               <div className="space-y-4">
@@ -331,33 +331,33 @@ const Dashboard = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="p-4 bg-gray-50 rounded-md"
+                    className="p-4 bg-gray-50 dark:bg-gray-800 rounded-md"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="bg-blue-100 p-2 rounded-full">
+                      <div className="bg-blue-100 dark:bg-blue-900 p-2 rounded-full">
                         <Activity className="h-5 w-5 text-blue-600" />
                       </div>
                       <div className="flex-1">
                         <div className="flex justify-between items-start">
                           <div>
-                            <h4 className="font-medium">Health Check #{check.id}</h4>
-                            <p className="text-sm text-gray-600">
+                            <h4 className="font-medium dark:text-white">Health Check #{check.id}</h4>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
                               Symptoms: {check.symptomNames.join(", ")}
                             </p>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
                               Conditions: {check.conditions.length > 0 ? check.conditions.map(c => c.name).join(", ") : "None"}
                             </p>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
                               Severity: {check.conditions.length > 0 ? check.conditions.map(c => c.severity_display).join(", ") : "N/A"}
                             </p>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
                               Urgency: {check.diagnosis.urgency}
                             </p>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
                               Recommendations: {check.diagnosis.recommendations.slice(0, 3).join(", ")}{check.diagnosis.recommendations.length > 3 ? "..." : ""}
                             </p>
                           </div>
-                          <div className="text-sm text-gray-500">
+                          <div className="text-sm text-gray-500 dark:text-gray-400">
                             <Clock className="h-3 w-3 mr-1 inline" />
                             {new Date(check.created_at).toLocaleDateString()}
                           </div>
@@ -375,7 +375,7 @@ const Dashboard = () => {
               </div>
             ) : (
               <div className="text-center py-8">
-                <p className="text-gray-600 mb-4">You haven't performed any symptom checks yet.</p>
+                <p className="text-gray-600 mb-4 dark:text-gray-400">You haven't performed any symptom checks yet.</p>
                 <button
                   onClick={() => navigate("/symptom-checker")}
                   className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
@@ -388,12 +388,12 @@ const Dashboard = () => {
         )}
 
         {activeTab === "appointments" && (
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4">Your Appointments</h3>
-            <p className="text-gray-600 mb-4">Manage your teleconsultations and appointments</p>
+          <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-4 dark:text-white">Your Appointments</h3>
+            <p className="text-gray-600 mb-4 dark:text-gray-400">Manage your teleconsultations and appointments</p>
             <div className="text-center py-8">
               <Calendar className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-              <p className="text-gray-600 mb-4">You don't have any upcoming appointments.</p>
+              <p className="text-gray-600 mb-4 dark:text-gray-400">You don't have any upcoming appointments.</p>
               <button
                 onClick={() => navigate("/doctors")}
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"

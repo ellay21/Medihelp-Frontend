@@ -19,9 +19,9 @@ const About = () => {
   
 
   return (
-    <div className="flex flex-col bg-gray-50 font-sans mt-15">
+    <div className="flex flex-col bg-gray-50 dark:bg-gray-900 font-sans mt-15">
       
-      <section className="flex flex-col justify-end items-center text-left px-4 py-16 md:py-24 bg-white h-screen">
+      <section className="flex flex-col justify-end items-center text-left px-4 py-16 md:py-24 bg-white dark:bg-gray-900 h-screen">
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
           <div className="md:w-1/2 flex justify-center mb-8 md:mb-0">
             <img
@@ -31,10 +31,10 @@ const About = () => {
             />
           </div>
           <div className="md:w-1/2 relative">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               {content.whoWeAre.title}
             </h2>
-            <p className="text-lg text-gray-600 max-w-lg mb-6">
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-lg mb-6">
               {content.whoWeAre.description}
             </p>
             <a
