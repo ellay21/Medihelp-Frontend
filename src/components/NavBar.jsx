@@ -37,7 +37,7 @@ const NavBar = () => {
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <div className="flex items-center space-x-1">
         <img src="/logo.png" className="w-14 h-14"/>
-          <span className="text-xl font-semibold text-gray-800">MediHelp</span>
+          <span className="text-xl font-semibold text-gray-800">MediHelp+</span>
         </div>
 
         <div className="md:hidden">

@@ -10,7 +10,7 @@ const FirstAidList = () => {
   const [homeRemedies, setHomeRemedies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState("firstaid"); // Track active tab, default to firstaid
+  const [activeTab, setActiveTab] = useState("firstaid");
   const navigate = useNavigate();
 
   const debounce = (func, delay) => {
@@ -30,6 +30,12 @@ const FirstAidList = () => {
       const remedies = guides.filter((guide) => guide.type === "homeremedy");
       setFirstAidGuides(firstAid);
       setHomeRemedies(remedies);
+
+      // Fetch home remedies from the new API endpoint
+      const remediesResponse = await fetch(`https://medihelp-backend.onrender.com/api/firstaid/remedies${query ? `?search=${encodeURIComponent(query)}` : ""}`);
+      if (!remediesResponse.ok) throw new Error("Failed to fetch remedies");
+      const remediesData = await remediesResponse.json();
+      setHomeRemedies((prevRemedies) => [...prevRemedies, ...remediesData.results]);
     } catch (err) {
       console.error("Error fetching first aid content:", err);
       setFirstAidGuides([]);
@@ -66,13 +72,13 @@ const FirstAidList = () => {
 
   const filteredHomeRemedies = homeRemedies.filter(
     (remedy) =>
-      remedy.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      remedy.description.toLowerCase().includes(searchQuery.toLowerCase())
+      remedy.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      remedy.preparation.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div className="container py-10 mt-15">
-      
+      <NavBar />
       <div className="max-w-4xl mx-auto">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold mb-2">First Aid & Home Remedies</h1>
@@ -128,7 +134,7 @@ const FirstAidList = () => {
 
         {isLoading ? (
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <Loader2 className="animate-spin h-12 w-12 text-blue-600 mx-auto" />
             <p className="mt-4 text-lg text-gray-600">
               Loading {activeTab === "firstaid" ? "first aid guides" : "home remedies"}...
             </p>
@@ -165,13 +171,13 @@ const FirstAidList = () => {
                         </div>
                         <p className="text-gray-600 mt-2">{guide.description}</p>
                         <div className="mt-4">
-                          <a
-                            href="https://en.wikipedia.org/wiki/First_aid"
+                          <Link
+                            to={`/first-aid/${guide.id}`}
                             className="flex items-center justify-center w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
                           >
                             View Guide
                             <ArrowRight className="ml-2 h-4 w-4" />
-                          </a>
+                          </Link>
                         </div>
                       </div>
                     </motion.div>
@@ -190,8 +196,16 @@ const FirstAidList = () => {
                       transition={{ duration: 0.3 }}
                     >
                       <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                        <h3 className="text-xl font-semibold text-green-600">{remedy.title}</h3>
-                        <p className="text-gray-600 mt-2">{remedy.description}</p>
+                        <h3 className="text-xl font-semibold text-green-600">{remedy.name}</h3>
+                        <p className="text-gray-600 mt-2">{remedy.preparation}</p>
+                        <div className="mt-2 text-gray-600">
+                          <strong>Ingredients:</strong> {remedy.ingredients.join(", ")}
+                        </div>
+                        {remedy.symptoms.length > 0 && (
+                          <div className="mt-2 text-gray-600">
+                            <strong>Symptoms:</strong> {remedy.symptoms.join(", ")}
+                          </div>
+                        )}
                         <div className="mt-4">
                           <button
                             onClick={() => navigate(`/first-aid/remedies/${remedy.id}`)}
