@@ -13,6 +13,10 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import FindDoctor from "./pages/FindDoctor";
 import Dashboard from "./pages/DashBoard";
 import Education from "./pages/Education";
+import NearbyClinics from "./pages/Clinics";
+import DoctorDashboard from "./pages/docdasboard";
+
+
 function App() {
   return (
     <Router>
@@ -22,8 +26,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/education" element={<Education />} />
-        
+        <Route path="/clinics" element={<NearbyClinics />}/>
         <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/doctors" element={<DoctorDashboard/>}></Route>
         <Route
           path="/first-aid"
           element={
