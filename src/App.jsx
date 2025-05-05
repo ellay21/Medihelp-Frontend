@@ -22,7 +22,7 @@ import Education from "./pages/Education";
 import ViewProfile from "./pages/ViewProfile";
 import NearbyClinics from "./pages/Clinics";
 import Layout from "./Layout";
-
+import ContactUs from "./pages/Contactus";
 function App() {
   return (
     <Router>
@@ -37,6 +37,7 @@ function App() {
         {/* Routes inside Layout wrapper */}
         <Route element={<Layout />}>
           <Route path="/login" element={<Login />} />
+          <Route path="/Contact" element={<ContactUs />} />
           <Route path="/" element={<Home />} />
           <Route path="/find-doctor/:id" element={<ViewProfile />} />
           <Route path="/education" element={<Education />} />

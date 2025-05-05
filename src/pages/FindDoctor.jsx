@@ -19,13 +19,8 @@ const FindDoctor = () => {
 
   useEffect(() => {
     const fetchDoctors = async () => {
-      // Retrieve token from localStorage
       const token = localStorage.getItem("token");
-      console.log("Retrieved token:", token); // Debug: Log the token
-
-      // Redirect to login if no token is found
       if (!token) {
-        console.log("No token found, redirecting to login");
         navigate("/login");
         return;
       }
@@ -42,7 +37,6 @@ const FindDoctor = () => {
           },
         });
 
-        // Handle the paginated response
         if (response.data.results && Array.isArray(response.data.results)) {
           setDoctors(response.data.results);
         } else {
@@ -50,7 +44,6 @@ const FindDoctor = () => {
         }
       } catch (err) {
         if (err.response?.status === 401) {
-          console.log("Unauthorized (401), clearing token and redirecting to login");
           localStorage.removeItem("token");
           navigate("/login");
           setError("Session expired or invalid token. Please log in again.");
@@ -75,6 +68,38 @@ const FindDoctor = () => {
     return nameMatch && specializationMatch;
   });
 
+  const handleBookAppointment = async (doctorId) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const apiUrl = `/api/doctors/profiles/${doctorId}/`;
+      const response = await api.get(apiUrl, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.user && response.data.user.phone) {
+        window.location.href = `tel:${response.data.user.phone}`;
+      } else {
+        setError("Phone number not available for this doctor.");
+      }
+    } catch (err) {
+      if (err.response?.status === 401) {
+        localStorage.removeItem("token");
+        navigate("/login");
+        setError("Session expired or invalid token. Please log in again.");
+      } else {
+        setError(err.response?.data?.message || err.message || "Failed to fetch doctor profile");
+      }
+    }
+  };
+
   if (loading) {
     return <div className="container mx-auto py-10 text-center mt-15 text-gray-800 dark:text-white">Loading...</div>;
   }
@@ -85,6 +110,7 @@ const FindDoctor = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 mt-15">
+      <NavBar />
       <div className="container mx-auto py-10">
         <div className="max-w-5xl mx-auto">
           <div className="mb-8 text-center">
@@ -162,7 +188,7 @@ const FindDoctor = () => {
                   </div>
                   <div className="flex gap-2">
                     <button
-                      onClick={() => navigate(`/doctors/${doctor.id}/book`)}
+                      onClick={() => handleBookAppointment(doctor.id)}
                       className={`flex-1 py-2 rounded-lg font-semibold text-white transition-colors ${
                         doctor.available
                           ? "bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
@@ -202,19 +228,6 @@ const FindDoctor = () => {
               )}
             </div>
           )}
-
-          <div className="mt-12 p-6 border rounded-lg bg-gray-100 dark:bg-gray-800 text-center">
-            <h3 className="text-xl font-bold mb-2 text-gray-800 dark:text-white">Are you a healthcare professional?</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4 max-w-lg mx-auto">
-              Join our platform to connect with patients and offer teleconsultations.
-            </p>
-            <button
-              onClick={() => navigate("/register-doctor")}
-              className="px-6 py-3 bg-blue-600 dark:bg-blue-700 text-white rounded-md hover:bg-blue-700 dark:hover:bg-blue-800 transition"
-            >
-              Register as a Doctor
-            </button>
-          </div>
         </div>
       </div>
     </div>

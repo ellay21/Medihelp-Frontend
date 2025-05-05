@@ -395,7 +395,7 @@ const Dashboard = () => {
               <Calendar className="h-12 w-12 text-blue-600 mx-auto mb-4" />
               <p className="text-gray-600 mb-4 dark:text-gray-400">You don't have any upcoming appointments.</p>
               <button
-                onClick={() => navigate("/doctors")}
+                onClick={() => navigate("/find-doctor")}
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
               >
                 Book an Appointment

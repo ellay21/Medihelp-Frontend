@@ -101,7 +101,7 @@ const SymptomList = () => {
     );
 
   return (
-    <div className="container mx-auto p-4 mt-15">
+    <div className="container mx-auto p-4 mt-20">
       <h2 className="text-3xl font-bold text-blue-700 mb-6 text-center dark:text-blue-300">
         Symptom Checker
       </h2>
