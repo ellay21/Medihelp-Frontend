@@ -3,6 +3,7 @@ import NavBar from "../components/NavBar";
 import { getArticles, getVideos } from "../services/api";
 import { AlertCircle } from "lucide-react";
 
+
 const Education = () => {
   const [articles, setArticles] = useState([]);
   const [videos, setVideos] = useState([]);
@@ -122,12 +123,12 @@ const Education = () => {
                         {Array.isArray(item.tags) ? item.tags.join(", ") : item.tags}
                       </p>
                     )}
-                    <button
-                      onClick={() => window.open(`/article/${item.id}`, "_blank")}
+                    <a
+                      href="https://en.wikipedia.org/wiki/Health"
                       className="bg-cyan-500 text-white px-4 py-2 rounded-md hover:bg-cyan-600 transition"
                     >
                       Read Article →
-                    </button>
+                    </a>
                   </div>
                 ) : (
                   <div key={item.id} className="bg-white p-6 rounded-lg shadow-md">

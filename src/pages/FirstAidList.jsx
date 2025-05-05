@@ -165,13 +165,13 @@ const FirstAidList = () => {
                         </div>
                         <p className="text-gray-600 mt-2">{guide.description}</p>
                         <div className="mt-4">
-                          <button
-                            onClick={() => navigate(`/first-aid/${guide.id}`)}
+                          <a
+                            href="https://en.wikipedia.org/wiki/First_aid"
                             className="flex items-center justify-center w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
                           >
                             View Guide
                             <ArrowRight className="ml-2 h-4 w-4" />
-                          </button>
+                          </a>
                         </div>
                       </div>
                     </motion.div>

@@ -72,7 +72,7 @@ const ViewProfile = () => {
   }, [id, navigate]);
 
   if (loading) {
-    return <div className="container mx-auto py-10 text-center">Loading...</div>;
+    return <div className="container mx-auto py-10 text-center mt-15">Loading...</div>;
   }
 
   if (error) {
@@ -80,11 +80,11 @@ const ViewProfile = () => {
   }
 
   if (!doctor) {
-    return <div className="container mx-auto py-10 text-center">Doctor not found</div>;
+    return <div className="container mx-auto py-10 text-center mt-15">Doctor not found</div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 mt-15">
       
       <div className="container mt-6 mx-auto py-10">
         <button
