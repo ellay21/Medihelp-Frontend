@@ -101,9 +101,7 @@ const NavBar = () => {
           <Link to="/find-clinic" className="text-gray-600 hover:text-cyan-500">
             Find Clinic
           </Link>
-          <Link to="/appointments" className="text-gray-600 hover:text-cyan-500">
-            Appointments
-          </Link>
+          
 
           <button className="text-gray-600 hover:text-cyan-500">
             <FaSun className="text-xl" />
@@ -209,9 +207,7 @@ const NavBar = () => {
             <Link to="/find-clinic" className="text-gray-600 hover:text-cyan-500">
             Find Clinic
           </Link>
-            <Link to="/appointments" className="text-gray-600 hover:text-cyan-500" onClick={toggleMenu}>
-              Appointments
-            </Link>
+           
 
             {localStorage.getItem("token") ? (
               <div className="relative">
