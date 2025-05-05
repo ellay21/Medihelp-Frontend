@@ -17,7 +17,7 @@ import Home from "./pages/Home";
 import SkinDiagnosis from "./pages/SkinDiagnosis";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import FindDoctor from "./pages/FindDoctor";
-import Dashboard from "./pages/DashBoard";
+import Dashboard from "./pages/Dashboard";
 import Education from "./pages/Education";
 import ViewProfile from "./pages/ViewProfile";
 import NearbyClinics from "./pages/Clinics";
