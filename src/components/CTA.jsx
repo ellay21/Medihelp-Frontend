@@ -11,7 +11,7 @@ const CTA = () => {
         <p className="text-lg mb-8">
           Sign up now and get your first health assessment free.
         </p>
-        <button onClick={()=>navigate('/signup')} className="bg-white text-blue-600 dark:bg-gray-900 dark:text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-100 dark:hover:bg-gray-800 transition">
+        <button onClick={()=>navigate('/signup/patient')} className="bg-white text-blue-600 dark:bg-gray-900 dark:text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-100 dark:hover:bg-gray-800 transition">
           Create Your Account
         </button>
       </div>

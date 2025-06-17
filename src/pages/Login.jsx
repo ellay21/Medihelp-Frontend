@@ -1,103 +1,142 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { login } from "../services/api";
-import { motion } from "framer-motion";
-import { Mail, Lock, AlertCircle, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Loader2, Mail, Lock } from "lucide-react";
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
+    setError("");
 
     try {
-      const response = await login(formData);
+      const response = await fetch("https://medihelp-backend.onrender.com/api/auth/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-      localStorage.setItem("token", response.data.tokens.access);
-      
-      navigate("/");
+      if (response.status === 200) {
+        const data = await response.json();
+
+        // Save tokens to localStorage
+        localStorage.setItem("token", data.tokens.access);
+        localStorage.setItem("refresh_token", data.tokens.refresh);
+
+        // Navigate to home page
+        navigate("/");
+      } else {
+        setError("Invalid email or password. Please try again.");
+      }
     } catch (err) {
-      setError(err.response?.data?.error || "Login failed");
+      setError("Network error. Please check your connection and try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-2xl w-full max-w-md"
-      >
-        <h1 className="text-3xl font-bold mb-6 text-center text-blue-700 dark:text-blue-400">
-          Welcome Back to MediHelp+
-        </h1>
-        {error && (
-          <div className="flex items-center justify-center text-red-500 dark:text-red-400 mb-4">
-            <AlertCircle className="mr-2" />
-            {error}
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <Card className="w-full max-w-md shadow-xl">
+        <CardHeader className="space-y-1 text-center">
+          <div className="flex justify-center mb-4">
+            <div className="p-3 bg-blue-100 rounded-full">
+              {/* Replaced Heart icon with logo.png */}
+              <img 
+                src="/logo.png" 
+                alt="MediHelp Logo" 
+                className="h-12 w-12 object-contain" // Adjusted size to h-12 w-12
+              />
+            </div>
           </div>
-        )}
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="flex items-center text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
-              <Mail className="mr-2" /> Email
-            </label>
-            <input
-              type="email"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition bg-white dark:bg-gray-800 text-gray-800 dark:text-white"
-              required
-            />
-          </div>
-          <div>
-            <label className="flex items-center text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
-              <Lock className="mr-2" /> Password
-            </label>
-            <input
-              type="password"
-              value={formData.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-400 transition bg-white dark:bg-gray-800 text-gray-800 dark:text-white"
-              required
-            />
-          </div>
-          <motion.button
-            type="submit"
-            disabled={loading}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className={`w-full py-3 rounded-lg font-semibold text-white transition-colors ${
-              loading
-                ? "bg-blue-400 dark:bg-blue-500 cursor-not-allowed"
-                : "bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800"
-            }`}
-          >
-            {loading ? <Loader2 className="animate-spin mx-auto" /> : "Login"}
-          </motion.button>
+          <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
+          <CardDescription>Sign in to your MediHelp account</CardDescription>
+        </CardHeader>
+        <form onSubmit={handleSubmit}>
+          <CardContent className="space-y-4">
+            {error && (
+              <Alert variant="destructive">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="pl-10"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="pl-10"
+                  required
+                />
+              </div>
+            </div>
+          </CardContent>
+
+          <CardFooter className="flex flex-col space-y-4">
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Signing in...
+                </>
+              ) : (
+                "Sign In"
+              )}
+            </Button>
+
+            <div className="text-center text-sm text-gray-600">
+              Don't have an account?{" "}
+              <Link to="/signup/patient" className="text-blue-600 hover:underline font-medium">
+                Sign up here
+              </Link>
+            </div>
+          </CardFooter>
         </form>
-        <p className="mt-4 text-center text-gray-600 dark:text-gray-400">
-          Don’t have an account?{" "}
-          <Link
-            to="/signup"
-            className="text-blue-600 dark:text-blue-400 hover:underline transition"
-          >
-            Sign Up
-          </Link>
-        </p>
-      </motion.div>
+      </Card>
     </div>
   );
 };

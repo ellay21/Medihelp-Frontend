@@ -170,7 +170,7 @@ const NavBar = () => {
               <Link to="/login" className="text-gray-600 dark:text-white hover:text-cyan-500">
                 Log in
               </Link>
-              <Link to="/signup">
+              <Link to="/signup/patient">
                 <button className="bg-cyan-500 text-white px-4 py-2 rounded-md hover:bg-cyan-600 transition">
                   Sign up
                 </button>
