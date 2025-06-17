@@ -10,6 +10,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 // Pages
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import DoctorSignup from "./pages/DoctorSignup";
+import PatientSignup from "./pages/PatientSignup";
 import About from "./pages/AboutUs";
 import FirstAidList from "./pages/FirstAidList";
 import SymptomList from "./pages/SymptomChecker";
@@ -31,6 +33,8 @@ function App() {
       <Routes>
         {/* Routes outside Layout */}
         <Route path="/signup" element={<Signup />} />
+        <Route path="/signup/doctor" element={<DoctorSignup />} />
+        <Route path="/signup/patient" element={<PatientSignup />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
 
         {/* Routes inside Layout wrapper */}
