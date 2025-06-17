@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, Bot, CheckCircle, AlertCircle, Info } from "lucide-react";
 
 const SymptomList = () => {
+  const [mode, setMode] = useState("manual");
   const [symptoms, setSymptoms] = useState([]);
   const [selectedSymptoms, setSelectedSymptoms] = useState([]);
   const [diagnosis, setDiagnosis] = useState(null);
@@ -47,6 +48,7 @@ const SymptomList = () => {
       setError(null);
       const response = await checkSymptoms({ symptoms: selectedSymptoms });
       setDiagnosis(response.data);
+      setAiResponse(null);
     } catch (err) {
       setError(err.message || "Failed to check symptoms");
       setDiagnosis(null);
@@ -66,6 +68,7 @@ const SymptomList = () => {
       setError(null);
       const response = await chatInteract(message);
       setAiResponse(response.data.response);
+      setDiagnosis(null);
     } catch (err) {
       setError(err.message || "Failed to get AI response");
       setAiResponse(null);
@@ -106,138 +109,155 @@ const SymptomList = () => {
         Symptom Checker
       </h2>
 
-      {/* Symptom Selection */}
-      <div className="mb-8 bg-white shadow-md rounded-lg p-6 dark:bg-gray-900 dark:shadow-lg">
-        <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center dark:text-white">
-          <Info className="mr-2" /> Select Your Symptoms
-        </h3>
-        <div className="relative mb-4">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500" />
-          <input
-            type="text"
-            placeholder="Search symptoms..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
-          />
-        </div>
-        {loading && !diagnosis && !aiResponse ? (
-          <div className="text-center">
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-              className="inline-block h-8 w-8 text-blue-600 dark:text-blue-400"
+      {/* Tabs */}
+      <div className="flex justify-center mb-6 space-x-4">
+        <button
+          onClick={() => setMode("manual")}
+          className={`px-6 py-2 rounded-full font-semibold transition-colors ${
+            mode === "manual"
+              ? "bg-blue-600 text-white"
+              : "bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
+          }`}
+        >
+          Select Symptoms
+        </button>
+        <button
+          onClick={() => setMode("ai")}
+          className={`px-6 py-2 rounded-full font-semibold transition-colors ${
+            mode === "ai"
+              ? "bg-blue-600 text-white"
+              : "bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
+          }`}
+        >
+          Ask AI
+        </button>
+      </div>
+
+      {/* Manual Input */}
+      {mode === "manual" && (
+        <div className="mb-8 bg-white shadow-md rounded-lg p-6 dark:bg-gray-900 dark:shadow-lg">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center dark:text-white">
+            <Info className="mr-2" /> Select Your Symptoms
+          </h3>
+          <div className="relative mb-4">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+            <input
+              type="text"
+              placeholder="Search symptoms..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+            />
+          </div>
+
+          {loading && !diagnosis && !aiResponse ? (
+            <div className="text-center">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                className="inline-block h-8 w-8 text-blue-600 dark:text-blue-400"
+              >
+                {/* spinner SVG */}
+              </motion.div>
+              <p className="text-gray-600 mt-2 dark:text-gray-400">Loading...</p>
+            </div>
+          ) : error && !diagnosis && !aiResponse ? (
+            <div className="text-center text-red-600 flex items-center justify-center dark:text-red-400">
+              <AlertCircle className="mr-2" />
+              {error}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+              {sortedSymptoms.map((symptom) => (
+                <div
+                  key={symptom.id}
+                  className={`p-4 rounded-lg border transition-all duration-300 ${
+                    selectedSymptoms.includes(symptom.id)
+                      ? "bg-blue-100 border-blue-300 shadow-md dark:bg-blue-900 dark:border-blue-500"
+                      : "bg-gray-50 border-gray-200 hover:shadow-md dark:bg-gray-800 dark:border-gray-700"
+                  }`}
+                >
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={selectedSymptoms.includes(symptom.id)}
+                      onChange={() => handleSymptomChange(symptom.id)}
+                      className="mr-3 h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-800 dark:border-gray-700"
+                    />
+                    <span className="text-gray-800 dark:text-white">{symptom.name}</span>
+                    {selectedSymptoms.includes(symptom.id) && (
+                      <CheckCircle className="ml-2 text-green-500 dark:text-green-400" />
+                    )}
+                  </label>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="mb-4">
+            <p className="text-gray-700 dark:text-gray-300">
+              Selected Symptoms: {selectedSymptoms.map((id) => symptoms.find((s) => s.id === id)?.name).join(", ")}
+            </p>
+          </div>
+
+          <div className="flex justify-center space-x-4 mb-6">
+            <button
+              onClick={handleSubmitSymptoms}
+              disabled={loading}
+              className={`px-6 py-2 rounded-full font-semibold text-white transition-colors ${
+                loading
+                  ? "bg-blue-400 dark:bg-blue-500"
+                  : "bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+              }`}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                <path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9h-9" />
-              </svg>
-            </motion.div>
-            <p className="text-gray-600 mt-2 dark:text-gray-400">Loading...</p>
+              {loading ? "Submitting..." : "Submit Symptoms"}
+            </button>
+            <button
+              onClick={() => setSelectedSymptoms([])}
+              className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+            >
+              Clear Selection
+            </button>
           </div>
-        ) : error && !diagnosis && !aiResponse ? (
-          <div className="text-center text-red-600 flex items-center justify-center dark:text-red-400">
-            <AlertCircle className="mr-2" />
-            {error}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-            {sortedSymptoms.map((symptom) => (
-              <div
-                key={symptom.id}
-                className={`p-4 rounded-lg border transition-all duration-300 ${
-                  selectedSymptoms.includes(symptom.id)
-                    ? "bg-blue-100 border-blue-300 shadow-md dark:bg-blue-900 dark:border-blue-500"
-                    : "bg-gray-50 border-gray-200 hover:shadow-md dark:bg-gray-800 dark:border-gray-700"
-                }`}
-              >
-                <label className="flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={selectedSymptoms.includes(symptom.id)}
-                    onChange={() => handleSymptomChange(symptom.id)}
-                    className="mr-3 h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-800 dark:border-gray-700"
-                  />
-                  <span className="text-gray-800 dark:text-white">{symptom.name}</span>
-                  {selectedSymptoms.includes(symptom.id) && (
-                    <CheckCircle className="ml-2 text-green-500 dark:text-green-400" />
-                  )}
-                </label>
-              </div>
-            ))}
-          </div>
-        )}
-        <div className="mb-4">
-          <p className="text-gray-700 dark:text-gray-300">
-            Selected Symptoms:{" "}
-            {selectedSymptoms
-              .map((id) => symptoms.find((s) => s.id === id)?.name)
-              .join(", ")}
-          </p>
         </div>
-        <div className="flex justify-center space-x-4 mb-6">
-          <button
-            onClick={handleSubmitSymptoms}
-            disabled={loading}
-            className={`px-6 py-2 rounded-full font-semibold text-white transition-colors ${
-              loading
-                ? "bg-blue-400 dark:bg-blue-500"
-                : "bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
-            }`}
-          >
-            {loading ? "Submitting..." : "Submit Symptoms"}
-          </button>
-          <button
-            onClick={() => setSelectedSymptoms([])}
-            className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
-          >
-            Clear Selection
-          </button>
-        </div>
-      </div>
+      )}
 
-      {/* AI Interaction */}
-      <div className="mb-8 bg-white shadow-md rounded-lg p-6 dark:bg-gray-900 dark:shadow-lg">
-        <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center dark:text-white">
-          <Bot className="mr-2" /> Or Ask AI About Your Pain
-        </h3>
-        <div className="flex space-x-4 mb-4">
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="e.g., I am feeling nausea and a mild headache"
-            className="flex-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
-          />
-          <button
-            onClick={handleAiSubmit}
-            disabled={loading}
-            className={`px-6 py-2 rounded-full font-semibold text-white transition-colors ${
-              loading
-                ? "bg-blue-400 dark:bg-blue-500"
-                : "bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
-            }`}
-          >
-            {loading ? "Asking..." : "Ask AI"}
-          </button>
-        </div>
-        {error && !diagnosis && !aiResponse && (
-          <div className="text-center text-red-600 flex items-center justify-center dark:text-red-400">
-            <AlertCircle className="mr-2" />
-            {error}
+      {/* AI Input */}
+      {mode === "ai" && (
+        <div className="mb-8 bg-white shadow-md rounded-lg p-6 dark:bg-gray-900 dark:shadow-lg">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center dark:text-white">
+            <Bot className="mr-2" /> Or Ask AI About Your Pain
+          </h3>
+          <div className="flex space-x-4 mb-4">
+            <input
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="e.g., I am feeling nausea and a mild headache"
+              className="flex-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+            />
+            <button
+              onClick={handleAiSubmit}
+              disabled={loading}
+              className={`px-6 py-2 rounded-full font-semibold text-white transition-colors ${
+                loading
+                  ? "bg-blue-400 dark:bg-blue-500"
+                  : "bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+              }`}
+            >
+              {loading ? "Asking..." : "Ask AI"}
+            </button>
           </div>
-        )}
-      </div>
+          {error && !diagnosis && !aiResponse && (
+            <div className="text-center text-red-600 flex items-center justify-center dark:text-red-400">
+              <AlertCircle className="mr-2" />
+              {error}
+            </div>
+          )}
+        </div>
+      )}
 
-      {/* Diagnosis Result */}
+      {/* Diagnosis & AI Result */}
       <AnimatePresence>
         {(diagnosis || aiResponse) && (
           <motion.div
@@ -251,6 +271,7 @@ const SymptomList = () => {
               Diagnosis Result
             </h3>
             <div className="space-y-6">
+              {/* Symptom-Based Diagnosis */}
               {diagnosis && (
                 <div>
                   <h4 className="text-lg font-semibold text-gray-800 dark:text-white">
@@ -267,14 +288,12 @@ const SymptomList = () => {
                             <li key={condition.id}>
                               <span className="font-medium text-gray-800 dark:text-white">
                                 {condition.name}
-                              </span>{" "}
-                              (Severity: {condition.severity_display})
+                              </span> (Severity: {condition.severity_display})
                               <p className="text-sm dark:text-gray-300">
                                 {condition.description}
                               </p>
                               <p className="text-xs text-gray-500 dark:text-gray-400">
-                                Created:{" "}
-                                {new Date(condition.created_at).toLocaleDateString()}
+                                Created: {new Date(condition.created_at).toLocaleDateString()}
                               </p>
                             </li>
                           ))}
@@ -295,8 +314,7 @@ const SymptomList = () => {
                               : diagnosis.diagnosis.urgency === "medium"
                               ? "text-yellow-600 dark:text-yellow-400"
                               : "text-red-600 dark:text-red-400"
-                          }`}
-                        >
+                          }`}>
                           {diagnosis.diagnosis.urgency}
                         </span>
                       </p>
@@ -304,22 +322,21 @@ const SymptomList = () => {
                         Recommendations:
                       </h5>
                       <ul className="list-disc list-inside text-gray-600 mt-2 space-y-1 dark:text-gray-400">
-                        {diagnosis.diagnosis.recommendations.map((rec, index) => (
-                          <li key={index}>{rec}</li>
+                        {diagnosis.diagnosis.recommendations.map((rec, idx) => (
+                          <li key={idx}>{rec}</li>
                         ))}
                       </ul>
                     </div>
                     <p className="text-sm text-gray-500 mt-4 dark:text-gray-400">
-                      Check Created:{" "}
-                      {new Date(diagnosis.created_at).toLocaleDateString()}
+                      Check Created: {new Date(diagnosis.created_at).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
               )}
-
+              {/* AI Analysis */}
               {aiResponse && (
                 <div>
-                  <h4 className="text-lg font-semibold text-gray-800 mt-6 dark:text-white">
+                  <h4 className="text-lg font-semibold text-gray-800 dark:text-white">
                     AI Analysis
                   </h4>
                   <div className="space-y-4 mt-2">
@@ -328,11 +345,8 @@ const SymptomList = () => {
                         Possible Conditions
                       </h5>
                       <ul className="list-disc list-inside text-gray-600 mt-2 space-y-2 dark:text-gray-400">
-                        {aiResponse.conditions.map((condition, index) => (
-                          <li
-                            key={index}
-                            className="font-medium text-gray-800 dark:text-white"
-                          >
+                        {aiResponse.conditions.map((condition, idx) => (
+                          <li key={idx} className="font-medium text-gray-800 dark:text-white">
                             {condition}
                           </li>
                         ))}
@@ -348,8 +362,7 @@ const SymptomList = () => {
                               : aiResponse.urgency === "medium"
                               ? "text-yellow-600 dark:text-yellow-400"
                               : "text-red-600 dark:text-red-400"
-                          }`}
-                        >
+                          }`}>
                           {aiResponse.urgency}
                         </span>
                       </p>
@@ -357,8 +370,8 @@ const SymptomList = () => {
                         Recommendations:
                       </h5>
                       <ul className="list-disc list-inside text-gray-600 mt-2 space-y-1 dark:text-gray-400">
-                        {aiResponse.recommendations.map((rec, index) => (
-                          <li key={index}>{rec}</li>
+                        {aiResponse.recommendations.map((rec, idx) => (
+                          <li key={idx}>{rec}</li>
                         ))}
                       </ul>
                     </div>
