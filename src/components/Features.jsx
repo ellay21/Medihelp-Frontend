@@ -59,14 +59,14 @@ const Home = () => {
           icon: <FaStethoscope className="h-8 w-8 text-blue-600" />,
           description: 'Connect with qualified healthcare professionals for teleconsultations.',
           buttonText: 'Find Doctors',
-          buttonLink: '/doctor',
+          buttonLink: '/find-doctor',
         },
         {
           title: 'Nearby Clinics',
           icon: <FaMapPin className="h-8 w-8 text-blue-600" />,
           description: 'Locate healthcare facilities near you when you need in-person care.',
           buttonText: 'Find Clinics',
-          buttonLink: '/clinics',
+          buttonLink: '/find-clinic',
         },
         {
           title: 'Health Chat',
@@ -95,13 +95,14 @@ const Home = () => {
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-lg mb-6">
               {content.about.hero.description}
             </p>
-            <a
-              href={content.about.hero.ctaLink}
+            <Link
+              to={content.about.hero.ctaLink}
               className="inline-block bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-purple-700 dark:hover:bg-purple-600 transition"
               aria-label="Request a free consultation"
             >
               {content.about.hero.ctaButtonText}
-            </a>
+            </Link>
+
           </div>
           {/* Hero Illustration */}
           <div className="md:w-1/2 flex justify-center">
@@ -165,13 +166,13 @@ const Home = () => {
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-lg mb-6">
               {content.about.whoWeAre.description}
             </p>
-            <a
-              href={content.about.whoWeAre.buttonLink}
-              className="inline-block bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-purple-700 dark:hover:bg-purple-600 transition"
-              aria-label="Learn more about us"
-            >
-              {content.about.whoWeAre.buttonText}
-            </a>
+            <Link to={content.about.whoWeAre.buttonLink}
+          className="inline-block bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-purple-700 dark:hover:bg-purple-600 transition"
+          aria-label="Learn more about us"
+        >
+          {content.about.whoWeAre.buttonText}
+        </Link>
+
             {/* Phone Graphic */}
             <img
               src={phoneGraphic}

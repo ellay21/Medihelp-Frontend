@@ -10,17 +10,13 @@ const About = () => {
     whoWeAre: {
       title: 'Meet The Team',
       description: 'We are a dedicated team of React and Django developers committed to building meaningful digital solutions. MediHelp is one of our key projects, developed to provide accessible, accurate, and practical health information to users. Our goal is to combine technology and healthcare knowledge to support better decision-making and promote well-being.',
-
       buttonText: 'Contact Us',
-      buttonLink: '/Contact'
+      buttonLink: 'mailto:mesudmelaku25@example.com'
     }
   }
-  
-  
 
   return (
     <div className="flex flex-col bg-gray-50 dark:bg-gray-900 font-sans mt-15">
-      
       <section className="flex flex-col justify-end items-center text-left px-4 py-16 md:py-24 bg-white dark:bg-gray-900 h-screen">
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
           <div className="md:w-1/2 flex justify-center mb-8 md:mb-0">
@@ -40,7 +36,7 @@ const About = () => {
             <a
               href={content.whoWeAre.buttonLink}
               className="inline-block bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-purple-700 transition"
-              aria-label="Learn more about us"
+              aria-label="Contact us via email"
             >
               {content.whoWeAre.buttonText}
             </a>
@@ -51,7 +47,8 @@ const About = () => {
             />
           </div>
         </div>
-      </section><Footer/>
+      </section>
+      <Footer />
     </div>
   )
 }

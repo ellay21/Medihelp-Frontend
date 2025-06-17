@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
@@ -25,9 +26,9 @@ const Footer = () => {
       <div className="container mx-auto text-center px-4">
         <p className="mb-4">© 2025 MediHelp+. All rights reserved.</p>
         <div className="flex justify-center gap-6">
-          <a href="/about" className="hover:text-blue-400 transition">
+          <Link to="/about" className="hover:text-blue-400 transition">
             About
-          </a>
+          </Link>
           <a
             href="#"
             onClick={(e) => {
