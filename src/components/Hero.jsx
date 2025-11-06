@@ -43,7 +43,7 @@ const Hero = () => {
           transition={{ duration: 1.5, delay: 0.4 }}
         >
           <Link to="/signup/patient">
-            <button className="bg-white text-gray-800 dark:bg-gray-900 dark:text-white   px-6 py-3 rounded-full font-semibold hover:bg-blue-100 transition">
+            <button className="bg-white text-gray-800 dark:bg-slate-800 dark:text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-100 dark:hover:bg-slate-700 transition-all shadow-lg hover:shadow-xl">
               Get Started for Free
             </button>
           </Link>

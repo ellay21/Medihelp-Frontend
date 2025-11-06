@@ -15,13 +15,16 @@ import {
   Save,
   X,
   Loader2,
+  Heart,
+  FileText,
+  TrendingUp,
+  Shield,
 } from "lucide-react";
 import { getHealthChecks, getSymptomById, getUserProfile, updateUserProfile } from "../services/api";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -36,7 +39,6 @@ const Dashboard = () => {
   const [profileSuccess, setProfileSuccess] = useState("");
   const navigate = useNavigate();
 
-  // Fetch user profile
   useEffect(() => {
     const fetchUserProfile = async () => {
       const token = localStorage.getItem("token");
@@ -70,7 +72,6 @@ const Dashboard = () => {
         const response = await getHealthChecks();
         const data = response.results || [];
 
-        // Fetch symptom names for each health check
         const checksWithSymptomNames = await Promise.all(
           data.map(async (check) => {
             const symptomNames = await Promise.all(
@@ -86,7 +87,6 @@ const Dashboard = () => {
         setSymptomChecks(checksWithSymptomNames);
       } catch (error) {
         console.error("Error fetching symptom checks:", error);
-        // Fallback to dummy data if API call fails
         setSymptomChecks([
           {
             id: 50,
@@ -178,10 +178,10 @@ const Dashboard = () => {
 
   if (isLoadingUser) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50 dark:from-slate-900 dark:via-blue-950 dark:to-slate-900 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-lg text-gray-600 dark:text-gray-400">Loading your dashboard...</p>
+          <Loader2 className="h-12 w-12 animate-spin text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+          <p className="text-lg text-gray-600 dark:text-slate-300">Loading your dashboard...</p>
         </div>
       </div>
     );
@@ -192,51 +192,58 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50 dark:from-slate-900 dark:via-blue-950 dark:to-slate-900">
       <NavBar />
       <div className="container mx-auto px-4 py-8 mt-20">
-        <h1 className="text-2xl md:text-3xl font-bold mb-6 dark:text-white">Welcome, {user.first_name}!</h1>
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">Welcome back, {user.first_name}! 👋</h1>
+          <p className="text-lg text-gray-600 dark:text-slate-300">Here's your health overview</p>
+        </div>
 
-        <div className="mb-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <div className="mb-8">
+          <div className="inline-flex bg-white dark:bg-slate-800 rounded-xl p-1.5 shadow-lg border border-gray-200 dark:border-slate-600">
             <button
               onClick={() => setActiveTab("overview")}
-              className={`px-3 py-2 text-sm md:text-base rounded-md transition ${
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
                 activeTab === "overview"
-                  ? "bg-blue-600 text-white hover:bg-blue-700"
-                  : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                  ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md"
+                  : "text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-700"
               }`}
             >
+              <TrendingUp className="w-4 h-4" />
               Overview
             </button>
             <button
               onClick={() => setActiveTab("profile")}
-              className={`px-3 py-2 text-sm md:text-base rounded-md transition ${
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
                 activeTab === "profile"
-                  ? "bg-blue-600 text-white hover:bg-blue-700"
-                  : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                  ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md"
+                  : "text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-700"
               }`}
             >
+              <User className="w-4 h-4" />
               Profile
             </button>
             <button
               onClick={() => setActiveTab("health-records")}
-              className={`px-3 py-2 text-sm md:text-base rounded-md transition ${
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
                 activeTab === "health-records"
-                  ? "bg-blue-600 text-white hover:bg-blue-700"
-                  : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                  ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md"
+                  : "text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-700"
               }`}
             >
+              <FileText className="w-4 h-4" />
               Health Records
             </button>
             <button
               onClick={() => setActiveTab("appointments")}
-              className={`px-3 py-2 text-sm md:text-base rounded-md transition ${
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
                 activeTab === "appointments"
-                  ? "bg-blue-600 text-white hover:bg-blue-700"
-                  : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                  ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md"
+                  : "text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-700"
               }`}
             >
+              <Calendar className="w-4 h-4" />
               Appointments
             </button>
           </div>
@@ -251,17 +258,17 @@ const Dashboard = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-slate-700 hover:scale-105">
                   <div className="flex items-center gap-4 mb-4">
                     <Activity className="h-8 w-8 text-blue-600" />
                     <div>
                       <h3 className="text-xl font-semibold dark:text-white">Symptom Checker</h3>
-                      <p className="text-gray-600 dark:text-gray-400">Check your symptoms</p>
+                      <p className="text-gray-600 dark:text-slate-300">Check your symptoms</p>
                     </div>
                   </div>
                   <button
                     onClick={() => navigate("/symptom-checker")}
-                    className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                    className="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-md hover:shadow-lg font-semibold"
                   >
                     Start Check
                   </button>
@@ -273,17 +280,17 @@ const Dashboard = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.1 }}
               >
-                <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-slate-700 hover:scale-105">
                   <div className="flex items-center gap-4 mb-4">
                     <AlertTriangle className="h-8 w-8 text-blue-600" />
                     <div>
                       <h3 className="text-xl font-semibold dark:text-white">First Aid</h3>
-                      <p className="text-gray-600 dark:text-gray-400">Access emergency guides</p>
+                      <p className="text-gray-600 dark:text-slate-300">Access emergency guides</p>
                     </div>
                   </div>
                   <button
                     onClick={() => navigate("/first-aid")}
-                    className="w-full py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                    className="w-full py-3 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 transition-all dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600 font-semibold border border-gray-200 dark:border-slate-600"
                   >
                     View Guides
                   </button>
@@ -295,17 +302,17 @@ const Dashboard = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.2 }}
               >
-                <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-slate-700 hover:scale-105">
                   <div className="flex items-center gap-4 mb-4">
                     <Stethoscope className="h-8 w-8 text-blue-600" />
                     <div>
                       <h3 className="text-xl font-semibold dark:text-white">Find Doctors</h3>
-                      <p className="text-gray-600 dark:text-gray-400">Book a consultation</p>
+                      <p className="text-gray-600 dark:text-slate-300">Book a consultation</p>
                     </div>
                   </div>
                   <button
                     onClick={() => navigate("/doctors")}
-                    className="w-full py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                    className="w-full py-3 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 transition-all dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600 font-semibold border border-gray-200 dark:border-slate-600"
                   >
                     Find Doctors
                   </button>
@@ -313,13 +320,20 @@ const Dashboard = () => {
               </motion.div>
             </div>
 
-            <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold mb-4 dark:text-white">Recent Health Checks</h3>
-              <p className="text-gray-600 mb-4 dark:text-gray-400">Your recent symptom checks and results</p>
+            <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
+                  <Heart className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold dark:text-white">Recent Health Checks</h3>
+                  <p className="text-gray-600 dark:text-slate-300">Your recent symptom checks and results</p>
+                </div>
+              </div>
               {isLoadingChecks ? (
                 <div className="text-center py-6">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                  <p className="mt-2 text-gray-600 dark:text-gray-400">Loading your health checks...</p>
+                  <p className="mt-2 text-gray-600 dark:text-slate-300">Loading your health checks...</p>
                 </div>
               ) : symptomChecks.length > 0 ? (
                 <div className="space-y-4">
@@ -329,22 +343,22 @@ const Dashboard = () => {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="flex items-start gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-md"
+                      className="flex items-start gap-4 p-5 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-slate-700 dark:to-slate-700/50 rounded-xl border border-gray-200 dark:border-slate-600 hover:shadow-md transition-all"
                     >
-                      <div className="bg-blue-100 dark:bg-blue-900 p-2 rounded-full">
-                        <Activity className="h-5 w-5 text-blue-600" />
+                      <div className="bg-blue-100 dark:bg-blue-900/50 p-3 rounded-xl">
+                        <Activity className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                       </div>
                       <div className="flex-1">
                         <div className="flex justify-between items-start">
                           <div>
                             <h4 className="font-medium dark:text-white">Health Check #{check.id}</h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-gray-600 dark:text-slate-300">
                               Symptoms: {check.symptomNames.join(", ")}
                             </p>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-gray-600 dark:text-slate-300">
                               Conditions: {check.conditions.length > 0 ? check.conditions.map(c => c.name).join(", ") : "None"}
                             </p>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-gray-600 dark:text-slate-300">
                               Urgency: {check.diagnosis.urgency}
                             </p>
                           </div>
@@ -355,7 +369,7 @@ const Dashboard = () => {
                         </div>
                         <button
                           onClick={() => navigate(`/symptom-checker/results/${check.id}`)}
-                          className="mt-2 px-3 py-1 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700 transition"
+                          className="mt-3 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg text-sm hover:from-blue-700 hover:to-blue-800 transition-all shadow-md hover:shadow-lg font-semibold"
                         >
                           View Details
                         </button>
@@ -366,7 +380,7 @@ const Dashboard = () => {
                     <div className="text-center mt-4">
                       <button
                         onClick={() => setActiveTab("health-records")}
-                        className="text-blue-600 hover:underline dark:text-blue-400"
+                        className="text-blue-600 hover:underline dark:text-blue-400 font-semibold"
                       >
                         View all health checks
                       </button>
@@ -375,10 +389,11 @@ const Dashboard = () => {
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-gray-600 mb-4 dark:text-gray-400">You haven't performed any symptom checks yet.</p>
+                  <Shield className="h-16 w-16 text-blue-600 dark:text-blue-400 mx-auto mb-4 opacity-50" />
+                  <p className="text-gray-600 mb-6 dark:text-slate-300 text-lg">You haven't performed any symptom checks yet.</p>
                   <button
                     onClick={() => navigate("/symptom-checker")}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                    className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl font-semibold"
                   >
                     Check Symptoms Now
                   </button>
@@ -389,9 +404,14 @@ const Dashboard = () => {
         )}
 
         {activeTab === "profile" && (
-          <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold dark:text-white">Your Profile</h3>
+          <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700">
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
+                  <User className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                </div>
+                <h3 className="text-2xl font-bold dark:text-white">Your Profile</h3>
+              </div>
               {!isEditingProfile && (
                 <Button
                   onClick={() => setIsEditingProfile(true)}
@@ -432,7 +452,7 @@ const Dashboard = () => {
                       />
                     </div>
                   ) : (
-                    <p className="text-gray-900 dark:text-white p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
+                    <p className="text-gray-900 dark:text-white p-3 bg-gray-50 dark:bg-slate-700 rounded-lg border border-gray-200 dark:border-slate-600">
                       {user.first_name || "Not set"}
                     </p>
                   )}
@@ -452,7 +472,7 @@ const Dashboard = () => {
                       />
                     </div>
                   ) : (
-                    <p className="text-gray-900 dark:text-white p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
+                    <p className="text-gray-900 dark:text-white p-3 bg-gray-50 dark:bg-slate-700 rounded-lg border border-gray-200 dark:border-slate-600">
                       {user.last_name || "Not set"}
                     </p>
                   )}
@@ -466,7 +486,7 @@ const Dashboard = () => {
                   <Input
                     id="email"
                     value={user.email || ""}
-                    className="pl-11 h-11 bg-gray-100 dark:bg-gray-800"
+                    className="pl-11 h-11 bg-gray-100 dark:bg-slate-700 border-gray-200 dark:border-slate-600"
                     disabled
                   />
                 </div>
@@ -488,7 +508,7 @@ const Dashboard = () => {
                       />
                     </div>
                   ) : (
-                    <p className="text-gray-900 dark:text-white p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
+                    <p className="text-gray-900 dark:text-white p-3 bg-gray-50 dark:bg-slate-700 rounded-lg border border-gray-200 dark:border-slate-600">
                       {user.phone || "Not set"}
                     </p>
                   )}
@@ -498,7 +518,7 @@ const Dashboard = () => {
               {user.date_of_birth && (
                 <div className="space-y-2">
                   <Label htmlFor="date_of_birth" className="text-sm font-semibold">Date of Birth</Label>
-                  <p className="text-gray-900 dark:text-white p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
+                  <p className="text-gray-900 dark:text-white p-3 bg-gray-50 dark:bg-slate-700 rounded-lg border border-gray-200 dark:border-slate-600">
                     {new Date(user.date_of_birth).toLocaleDateString()}
                   </p>
                 </div>
@@ -506,7 +526,7 @@ const Dashboard = () => {
 
               <div className="space-y-2">
                 <Label className="text-sm font-semibold">Account Type</Label>
-                <p className="text-gray-900 dark:text-white p-3 bg-gray-50 dark:bg-gray-800 rounded-md capitalize">
+                <p className="text-gray-900 dark:text-white p-3 bg-gray-50 dark:bg-slate-700 rounded-lg border border-gray-200 dark:border-slate-600 capitalize">
                   {user.role || "Patient"}
                 </p>
               </div>
@@ -546,13 +566,20 @@ const Dashboard = () => {
         )}
 
         {activeTab === "health-records" && (
-          <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4 dark:text-white">Your Health Records</h3>
-            <p className="text-gray-600 mb-4 dark:text-gray-400">View all your symptom checks and health data</p>
+          <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
+                <FileText className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold dark:text-white">Your Health Records</h3>
+                <p className="text-gray-600 dark:text-slate-300">View all your symptom checks and health data</p>
+              </div>
+            </div>
             {isLoadingChecks ? (
               <div className="text-center py-6">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                <p className="mt-2 text-gray-600 dark:text-gray-400">Loading your health records...</p>
+                <p className="mt-2 text-gray-600 dark:text-slate-300">Loading your health records...</p>
               </div>
             ) : symptomChecks.length > 0 ? (
               <div className="space-y-4">
@@ -562,29 +589,29 @@ const Dashboard = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="p-4 bg-gray-50 dark:bg-gray-800 rounded-md"
+                    className="p-5 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-slate-700 dark:to-slate-700/50 rounded-xl border border-gray-200 dark:border-slate-600 hover:shadow-md transition-all"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="bg-blue-100 dark:bg-blue-900 p-2 rounded-full">
-                        <Activity className="h-5 w-5 text-blue-600" />
+                      <div className="bg-blue-100 dark:bg-blue-900/50 p-3 rounded-xl">
+                        <Activity className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                       </div>
                       <div className="flex-1">
                         <div className="flex justify-between items-start">
                           <div>
                             <h4 className="font-medium dark:text-white">Health Check #{check.id}</h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-gray-600 dark:text-slate-300">
                               Symptoms: {check.symptomNames.join(", ")}
                             </p>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-gray-600 dark:text-slate-300">
                               Conditions: {check.conditions.length > 0 ? check.conditions.map(c => c.name).join(", ") : "None"}
                             </p>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-gray-600 dark:text-slate-300">
                               Severity: {check.conditions.length > 0 ? check.conditions.map(c => c.severity_display).join(", ") : "N/A"}
                             </p>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-gray-600 dark:text-slate-300">
                               Urgency: {check.diagnosis.urgency}
                             </p>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-gray-600 dark:text-slate-300">
                               Recommendations: {check.diagnosis.recommendations.slice(0, 3).join(", ")}{check.diagnosis.recommendations.length > 3 ? "..." : ""}
                             </p>
                           </div>
@@ -595,7 +622,7 @@ const Dashboard = () => {
                         </div>
                         <button
                           onClick={() => navigate(`/symptom-checker/results/${check.id}`)}
-                          className="mt-2 px-3 py-1 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700 transition"
+                          className="mt-3 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg text-sm hover:from-blue-700 hover:to-blue-800 transition-all shadow-md hover:shadow-lg font-semibold"
                         >
                           View Details
                         </button>
@@ -605,11 +632,12 @@ const Dashboard = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8">
-                <p className="text-gray-600 mb-4 dark:text-gray-400">You haven't performed any symptom checks yet.</p>
+              <div className="text-center py-12">
+                <Shield className="h-16 w-16 text-blue-600 dark:text-blue-400 mx-auto mb-4 opacity-50" />
+                <p className="text-gray-600 mb-6 dark:text-slate-300 text-lg">You haven't performed any symptom checks yet.</p>
                 <button
                   onClick={() => navigate("/symptom-checker")}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                  className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl font-semibold"
                 >
                   Check Symptoms Now
                 </button>
@@ -619,15 +647,22 @@ const Dashboard = () => {
         )}
 
         {activeTab === "appointments" && (
-          <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4 dark:text-white">Your Appointments</h3>
-            <p className="text-gray-600 mb-4 dark:text-gray-400">Manage your teleconsultations and appointments</p>
-            <div className="text-center py-8">
-              <Calendar className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-              <p className="text-gray-600 mb-4 dark:text-gray-400">You don't have any upcoming appointments.</p>
+          <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
+                <Calendar className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold dark:text-white">Your Appointments</h3>
+                <p className="text-gray-600 dark:text-slate-300">Manage your teleconsultations and appointments</p>
+              </div>
+            </div>
+            <div className="text-center py-12">
+              <Calendar className="h-16 w-16 text-blue-600 dark:text-blue-400 mx-auto mb-4 opacity-50" />
+              <p className="text-gray-600 mb-6 dark:text-slate-300 text-lg">You don't have any upcoming appointments.</p>
               <button
                 onClick={() => navigate("/find-doctor")}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl font-semibold"
               >
                 Book an Appointment
               </button>
