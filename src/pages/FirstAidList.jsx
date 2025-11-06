@@ -10,6 +10,11 @@ import {
   Pill,
   ArrowRight,
   Loader2,
+  Heart,
+  Phone,
+  Stethoscope,
+  ExternalLink,
+  Sparkles,
 } from "lucide-react";
 
 const FirstAidList = () => {
@@ -34,28 +39,17 @@ const FirstAidList = () => {
       const response = query
         ? await searchFirstAid(query)
         : await getFirstAid();
-      const guides = Array.isArray(response.data)
-        ? response.data
-        : response.data.results || [];
+      
+      // Handle paginated response - the API returns data directly
+      const guides = response.results || response || [];
+      
       const firstAid = guides.filter(
         (guide) => guide.type === "firstaid" || !guide.type
       );
       const remedies = guides.filter((guide) => guide.type === "homeremedy");
+      
       setFirstAidGuides(firstAid);
       setHomeRemedies(remedies);
-
-      // Fetch home remedies from the new API endpoint
-      const remediesResponse = await fetch(
-        `https://medihelp-backend.onrender.com/api/firstaid/remedies${
-          query ? `?search=${encodeURIComponent(query)}` : ""
-        }`
-      );
-      if (!remediesResponse.ok) throw new Error("Failed to fetch remedies");
-      const remediesData = await remediesResponse.json();
-      setHomeRemedies((prevRemedies) => [
-        ...prevRemedies,
-        ...remediesData.results,
-      ]);
     } catch (err) {
       console.error("Error fetching first aid content:", err);
       setFirstAidGuides([]);
@@ -97,73 +91,87 @@ const FirstAidList = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-red-50 to-gray-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900">
       <NavBar />
       <div className="container mx-auto px-4 py-8 mt-20">
-        <div className="max-w-4xl mx-auto">
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">First Aid & Home Remedies</h1>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Access emergency first aid guides and home remedies for common
-            health issues. Always seek professional medical help for serious
-            conditions.
-          </p>
-        </div>
-
-        <div className="relative mb-6">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400 dark:text-gray-500" />
-          <input
-            type="text"
-            placeholder="Search for first aid guides or remedies..."
-            className="w-full pl-9 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 bg-white text-gray-800 dark:bg-gray-900 dark:text-white"
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-          {searchQuery && (
-            <button
-              onClick={clearSearch}
-              className="absolute right-2 cursor-pointer top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+        <div className="max-w-6xl mx-auto">
+          {/* Hero Section */}
+          <div className="text-center mb-10">
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl mb-4 shadow-lg"
             >
-              <X size={20} />
-            </button>
-          )}
-        </div>
-
-        <div className="mb-6">
-          <div className="grid w-full grid-cols-2 gap-2">
-            <button
-              onClick={() => setActiveTab("firstaid")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-md cursor-pointer transition ${
-                activeTab === "firstaid"
-                  ? "bg-blue-600 text-white hover:bg-blue-700"
-                  : "bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700"
-              }`}
-            >
-              <AlertTriangle className="h-4 w-4" /> First Aid Guides
-            </button>
-            <button
-              onClick={() => setActiveTab("remedies")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-md cursor-pointer transition ${
-                activeTab === "remedies"
-                  ? "bg-blue-600 text-white hover:bg-blue-700"
-                  : "bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700"
-              }`}
-            >
-              <Pill className="h-4 w-4" /> Home Remedies
-            </button>
-          </div>
-        </div>
-
-        {isLoading ? (
-          <div className="text-center py-12">
-            <Loader2 className="animate-spin h-12 w-12 text-blue-600 mx-auto" />
-            <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
-              Loading{" "}
-              {activeTab === "firstaid" ? "first aid guides" : "home remedies"}
-              ...
+              <Heart className="w-8 h-8 text-white" />
+            </motion.div>
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">
+              First Aid & Home Remedies
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Access emergency first aid guides and natural home remedies for common health issues
             </p>
           </div>
-        ) : (
+
+          {/* Search Bar */}
+          <div className="mb-8">
+            <div className="relative max-w-2xl mx-auto">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+              <input
+                type="text"
+                placeholder="Search for first aid guides or remedies..."
+                className="w-full pl-12 pr-12 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-lg transition-all"
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
+              {searchQuery && (
+                <button
+                  onClick={clearSearch}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Tab Selector */}
+          <div className="flex justify-center mb-8">
+            <div className="inline-flex bg-white dark:bg-gray-800 rounded-xl p-1.5 shadow-lg border border-gray-200 dark:border-gray-700">
+              <button
+                onClick={() => setActiveTab("firstaid")}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
+                  activeTab === "firstaid"
+                    ? "bg-gradient-to-r from-red-600 to-red-700 text-white shadow-md"
+                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                }`}
+              >
+                <AlertTriangle className="w-4 h-4" />
+                First Aid Guides
+              </button>
+              <button
+                onClick={() => setActiveTab("remedies")}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
+                  activeTab === "remedies"
+                    ? "bg-gradient-to-r from-green-600 to-green-700 text-white shadow-md"
+                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                }`}
+              >
+                <Pill className="w-4 h-4" />
+                Home Remedies
+              </button>
+            </div>
+          </div>
+
+          {/* Loading State */}
+          {isLoading ? (
+            <div className="text-center py-16">
+              <Loader2 className="animate-spin h-12 w-12 text-red-600 dark:text-red-400 mx-auto" />
+              <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
+                Loading {activeTab === "firstaid" ? "first aid guides" : "home remedies"}...
+              </p>
+            </div>
+          ) : (
           <div className="space-y-6">
             {activeTab === "firstaid" && filteredFirstAidGuides.length > 0 ? (
               <div className="grid gap-6 md:grid-cols-2">

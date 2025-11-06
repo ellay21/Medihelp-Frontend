@@ -83,33 +83,34 @@ const Home = () => {
     <div className="flex flex-col bg-gray-50 dark:bg-gray-900 font-sans">
       {/* About Section */}
       <section className="flex-1 flex items-center justify-center text-left px-4 py-16 md:py-24 bg-gradient-to-r from-gray-50 to-purple-50 dark:from-gray-900 dark:to-purple-900">
-        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
+        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Text Content */}
-          <div className="md:w-1/2 mb-8 md:mb-0">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-2">
+          <div className="md:w-1/2 flex flex-col justify-center">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-3 leading-tight">
               {content.about.hero.title}
             </h1>
-            <h2 className="text-2xl md:text-3xl font-semibold text-blue-600 dark:text-blue-400 mb-4">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-blue-600 dark:text-blue-400 mb-6 leading-snug">
               {content.about.hero.subtitle}
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-lg mb-6">
+            <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-xl mb-8 leading-relaxed">
               {content.about.hero.description}
             </p>
-            <Link
-              to={content.about.hero.ctaLink}
-              className="inline-block bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-purple-700 dark:hover:bg-purple-600 transition"
-              aria-label="Request a free consultation"
-            >
-              {content.about.hero.ctaButtonText}
-            </Link>
-
+            <div>
+              <Link
+                to={content.about.hero.ctaLink}
+                className="inline-block bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-700 hover:shadow-lg dark:hover:bg-purple-600 transition-all duration-300 transform hover:scale-105"
+                aria-label="Request a free consultation"
+              >
+                {content.about.hero.ctaButtonText}
+              </Link>
+            </div>
           </div>
           {/* Hero Illustration */}
-          <div className="md:w-1/2 flex justify-center">
+          <div className="md:w-1/2 flex items-center justify-center">
             <img
               src={illustrationImage}
               alt="Healthcare professionals providing medical consultation and care"
-              className="w-64 h-64 md:w-96 md:h-96 object-contain"
+              className="w-72 h-72 md:w-96 md:h-96 lg:w-[450px] lg:h-[450px] object-contain drop-shadow-lg"
             />
           </div>
         </div>

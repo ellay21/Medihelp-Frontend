@@ -21,6 +21,7 @@ import {
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import LanguageSelector from "./LanguageSelector";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -201,6 +202,9 @@ const NavBar = () => {
               <span>Find Clinic</span>
             </Link>
 
+            {/* Language Selector */}
+            <LanguageSelector />
+
             {/* Dark Mode Toggle */}
             <button
               onClick={toggleDarkMode}
@@ -348,6 +352,11 @@ const NavBar = () => {
             </Link>
 
             <div className="border-t border-gray-200 dark:border-gray-800 pt-2 mt-2">
+              {/* Language Selector for Mobile */}
+              <div className="px-4 py-3">
+                <LanguageSelector />
+              </div>
+              
               <button
                 onClick={toggleDarkMode}
                 className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
