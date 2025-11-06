@@ -8,29 +8,60 @@ import {
   Stethoscope,
   Clock,
   Calendar,
+  User,
+  Mail,
+  Phone,
+  Edit2,
+  Save,
+  X,
+  Loader2,
 } from "lucide-react";
-import { getHealthChecks, getSymptomById } from "../services/api";
+import { getHealthChecks, getSymptomById, getUserProfile, updateUserProfile } from "../services/api";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
-// Mock useAuth (replace with your actual implementation)
-const useAuth = () => {
-  const [user, setUser] = useState({ first_name: "User" });
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  return { user, isAuthenticated, isLoading };
-};
 
 const Dashboard = () => {
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const [user, setUser] = useState(null);
+  const [isLoadingUser, setIsLoadingUser] = useState(true);
   const [symptomChecks, setSymptomChecks] = useState([]);
   const [isLoadingChecks, setIsLoadingChecks] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [profileData, setProfileData] = useState({});
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+  const [profileError, setProfileError] = useState("");
+  const [profileSuccess, setProfileSuccess] = useState("");
   const navigate = useNavigate();
 
+  // Fetch user profile
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      navigate("/login");
-    }
-  }, [isLoading, isAuthenticated, navigate]);
+    const fetchUserProfile = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+
+      try {
+        setIsLoadingUser(true);
+        const userData = await getUserProfile();
+        setUser(userData);
+        setProfileData(userData);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+        if (error.message.includes("401")) {
+          navigate("/login");
+        }
+      } finally {
+        setIsLoadingUser(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, [navigate]);
 
   useEffect(() => {
     const fetchSymptomChecks = async () => {
@@ -111,64 +142,107 @@ const Dashboard = () => {
       }
     };
     fetchSymptomChecks();
-  }, [isAuthenticated]);
+  }, [user]);
 
-  if (isLoading) {
+  const handleProfileChange = (e) => {
+    setProfileData({
+      ...profileData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSaveProfile = async () => {
+    setIsSavingProfile(true);
+    setProfileError("");
+    setProfileSuccess("");
+
+    try {
+      const updatedUser = await updateUserProfile(profileData);
+      setUser(updatedUser);
+      setProfileData(updatedUser);
+      setIsEditingProfile(false);
+      setProfileSuccess("Profile updated successfully!");
+      setTimeout(() => setProfileSuccess(""), 3000);
+    } catch (error) {
+      setProfileError(error.message || "Failed to update profile");
+    } finally {
+      setIsSavingProfile(false);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setProfileData(user);
+    setIsEditingProfile(false);
+    setProfileError("");
+  };
+
+  if (isLoadingUser) {
     return (
-      <div className="container flex items-center justify-center min-h-[calc(100vh-8rem)]">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">Loading...</p>
+          <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
+          <p className="text-lg text-gray-600 dark:text-gray-400">Loading your dashboard...</p>
         </div>
       </div>
     );
   }
 
-  if (!isAuthenticated) {
+  if (!user) {
     return null;
   }
 
   return (
-    <div className="container py-10 mt-15 ml-3">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <NavBar />
-      <h1 className="text-3xl font-bold mb-6 dark:text-white">Welcome, {user.first_name}!</h1>
+      <div className="container mx-auto px-4 py-8 mt-20">
+        <h1 className="text-2xl md:text-3xl font-bold mb-6 dark:text-white">Welcome, {user.first_name}!</h1>
 
-      <div className="mb-6">
-        <div className="grid grid-cols-3 gap-2">
-          <button
-            onClick={() => setActiveTab("overview")}
-            className={`px-4 py-2 rounded-md transition ${
-              activeTab === "overview"
-                ? "bg-blue-600 text-white hover:bg-blue-700"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-            }`}
-          >
-            Overview
-          </button>
-          <button
-            onClick={() => setActiveTab("health-records")}
-            className={`px-4 py-2 rounded-md transition ${
-              activeTab === "health-records"
-                ? "bg-blue-600 text-white hover:bg-blue-700"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-            }`}
-          >
-            Health Records
-          </button>
-          <button
-            onClick={() => setActiveTab("appointments")}
-            className={`px-4 py-2 rounded-md transition ${
-              activeTab === "appointments"
-                ? "bg-blue-600 text-white hover:bg-blue-700"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-            }`}
-          >
-            Appointments
-          </button>
+        <div className="mb-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <button
+              onClick={() => setActiveTab("overview")}
+              className={`px-3 py-2 text-sm md:text-base rounded-md transition ${
+                activeTab === "overview"
+                  ? "bg-blue-600 text-white hover:bg-blue-700"
+                  : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+              }`}
+            >
+              Overview
+            </button>
+            <button
+              onClick={() => setActiveTab("profile")}
+              className={`px-3 py-2 text-sm md:text-base rounded-md transition ${
+                activeTab === "profile"
+                  ? "bg-blue-600 text-white hover:bg-blue-700"
+                  : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+              }`}
+            >
+              Profile
+            </button>
+            <button
+              onClick={() => setActiveTab("health-records")}
+              className={`px-3 py-2 text-sm md:text-base rounded-md transition ${
+                activeTab === "health-records"
+                  ? "bg-blue-600 text-white hover:bg-blue-700"
+                  : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+              }`}
+            >
+              Health Records
+            </button>
+            <button
+              onClick={() => setActiveTab("appointments")}
+              className={`px-3 py-2 text-sm md:text-base rounded-md transition ${
+                activeTab === "appointments"
+                  ? "bg-blue-600 text-white hover:bg-blue-700"
+                  : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+              }`}
+            >
+              Appointments
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div className="space-y-6">
+        <div className="space-y-6">
         {activeTab === "overview" && (
           <>
             <div className="grid gap-6 md:grid-cols-3">
@@ -314,6 +388,163 @@ const Dashboard = () => {
           </>
         )}
 
+        {activeTab === "profile" && (
+          <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold dark:text-white">Your Profile</h3>
+              {!isEditingProfile && (
+                <Button
+                  onClick={() => setIsEditingProfile(true)}
+                  className="flex items-center gap-2"
+                  variant="outline"
+                >
+                  <Edit2 className="h-4 w-4" />
+                  Edit Profile
+                </Button>
+              )}
+            </div>
+
+            {profileSuccess && (
+              <Alert className="mb-4 bg-green-50 border-green-200">
+                <AlertDescription className="text-green-800">{profileSuccess}</AlertDescription>
+              </Alert>
+            )}
+
+            {profileError && (
+              <Alert variant="destructive" className="mb-4">
+                <AlertDescription>{profileError}</AlertDescription>
+              </Alert>
+            )}
+
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="first_name" className="text-sm font-semibold">First Name</Label>
+                  {isEditingProfile ? (
+                    <div className="relative">
+                      <User className="absolute left-3 top-3 h-5 w-5 text-blue-500" />
+                      <Input
+                        id="first_name"
+                        name="first_name"
+                        value={profileData.first_name || ""}
+                        onChange={handleProfileChange}
+                        className="pl-11 h-11"
+                      />
+                    </div>
+                  ) : (
+                    <p className="text-gray-900 dark:text-white p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
+                      {user.first_name || "Not set"}
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="last_name" className="text-sm font-semibold">Last Name</Label>
+                  {isEditingProfile ? (
+                    <div className="relative">
+                      <User className="absolute left-3 top-3 h-5 w-5 text-blue-500" />
+                      <Input
+                        id="last_name"
+                        name="last_name"
+                        value={profileData.last_name || ""}
+                        onChange={handleProfileChange}
+                        className="pl-11 h-11"
+                      />
+                    </div>
+                  ) : (
+                    <p className="text-gray-900 dark:text-white p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
+                      {user.last_name || "Not set"}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-sm font-semibold">Email Address</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                  <Input
+                    id="email"
+                    value={user.email || ""}
+                    className="pl-11 h-11 bg-gray-100 dark:bg-gray-800"
+                    disabled
+                  />
+                </div>
+                <p className="text-xs text-gray-500">Email cannot be changed</p>
+              </div>
+
+              {user.phone && (
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-sm font-semibold">Phone Number</Label>
+                  {isEditingProfile ? (
+                    <div className="relative">
+                      <Phone className="absolute left-3 top-3 h-5 w-5 text-blue-500" />
+                      <Input
+                        id="phone"
+                        name="phone"
+                        value={profileData.phone || ""}
+                        onChange={handleProfileChange}
+                        className="pl-11 h-11"
+                      />
+                    </div>
+                  ) : (
+                    <p className="text-gray-900 dark:text-white p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
+                      {user.phone || "Not set"}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {user.date_of_birth && (
+                <div className="space-y-2">
+                  <Label htmlFor="date_of_birth" className="text-sm font-semibold">Date of Birth</Label>
+                  <p className="text-gray-900 dark:text-white p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
+                    {new Date(user.date_of_birth).toLocaleDateString()}
+                  </p>
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold">Account Type</Label>
+                <p className="text-gray-900 dark:text-white p-3 bg-gray-50 dark:bg-gray-800 rounded-md capitalize">
+                  {user.role || "Patient"}
+                </p>
+              </div>
+
+              {isEditingProfile && (
+                <div className="flex gap-3 pt-4">
+                  <Button
+                    onClick={handleSaveProfile}
+                    disabled={isSavingProfile}
+                    className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+                  >
+                    {isSavingProfile ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="h-4 w-4" />
+                        Save Changes
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    onClick={handleCancelEdit}
+                    variant="outline"
+                    disabled={isSavingProfile}
+                    className="flex items-center gap-2"
+                  >
+                    <X className="h-4 w-4" />
+                    Cancel
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {activeTab === "health-records" && (
           <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold mb-4 dark:text-white">Your Health Records</h3>
@@ -403,6 +634,7 @@ const Dashboard = () => {
             </div>
           </div>
         )}
+        </div>
       </div>
     </div>
   );

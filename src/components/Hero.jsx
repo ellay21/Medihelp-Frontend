@@ -5,7 +5,7 @@ import NavBar from "./NavBar";
 
 const Hero = () => {
   return (
-    <div className="text-white dark:text-white relative min-h-screen overflow-hidden transition-all duration-1000">
+    <div className="text-white dark:text-white relative min-h-screen overflow-hidden transition-all duration-1000 flex items-center justify-center">
       <video
         className="absolute top-0 left-0 w-full h-full object-cover"
         autoPlay
@@ -15,10 +15,9 @@ const Hero = () => {
         <source src={herovideo} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-      <div className="absolute inset-0 bg-black dark:bg-black opacity-40"></div>
-     
+      <div className="absolute inset-0 bg-black opacity-50"></div>
 
-      <div className="container mx-auto text-center px-4 absolute top-1/3">
+      <div className="container mx-auto text-center px-4 relative z-10">
         <motion.h1
           className="text-4xl md:text-5xl font-bold mb-4 text-white dark:text-white"
           initial={{ opacity: 0, y: 50 }}

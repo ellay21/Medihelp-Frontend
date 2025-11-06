@@ -16,13 +16,14 @@ const About = () => {
   }
 
   return (
-    <div className="flex flex-col bg-gray-50 dark:bg-gray-900 font-sans mt-15">
-      <section className="flex flex-col justify-end items-center text-left px-4 py-16 md:py-24 bg-white dark:bg-gray-900 h-screen">
+    <div className="flex flex-col bg-gray-50 dark:bg-gray-900 font-sans">
+      <NavBar />
+      <section className="flex flex-col justify-end items-center text-left px-4 py-16 md:py-24 bg-white dark:bg-gray-900 min-h-screen mt-20">
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
           <div className="md:w-1/2 flex justify-center mb-8 md:mb-0">
             <img
               src={teamIllustration}
-              alt="Illustration of the Pomegranate Studio team"
+              alt="MediHelp+ development team - React and Django developers"
               className="w-64 h-64 md:w-146 md:h-146 object-contain"
             />
           </div>
@@ -42,7 +43,7 @@ const About = () => {
             </a>
             <img
               src={phoneGraphic}
-              alt="Telegram Mini App on phone"
+              alt="Healthcare technology and digital health solutions"
               className="absolute hidden md:block top-0 right-0 w-32 h-48 object-contain transform translate-x-12 -translate-y-12"
             />
           </div>
