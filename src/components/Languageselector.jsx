@@ -4,18 +4,30 @@ import { useEffect, useState, useRef } from "react"
 import { ChevronDown, Globe } from "lucide-react"
 
 const languages = [
-    { code: "en", name: "English" },
-    { code: "am", name: "Amharic (አማርኛ)" },
-    { code: "ti", name: "Tigrinya (ትግርኛ)" },
-    { code: "om", name: "Oromo (Afaan Oromoo)" },
-    { code: "so", name: "Somali (Soomaali)" },
-    { code: "es", name: "Spanish" },
-    { code: "fr", name: "French" },
-    { code: "de", name: "German" },
-    { code: "it", name: "Italian" },
-    { code: "pt", name: "Portuguese" },
-    { code: "ar", name: "Arabic" },
+    { code: "en", name: "English", flag: "🇬🇧" },
+    { code: "am", name: "Amharic (አማርኛ)", flag: "🇪🇹" },
+    { code: "ti", name: "Tigrinya (ትግርኛ)", flag: "🇪🇷" },
+    { code: "om", name: "Oromo (Afaan Oromoo)", flag: "🇪🇹" },
+    { code: "so", name: "Somali (Soomaali)", flag: "🇸🇴" },
+    { code: "es", name: "Spanish", flag: "🇪🇸" },
+    { code: "fr", name: "French", flag: "🇫🇷" },
+    { code: "de", name: "German", flag: "🇩🇪" },
+    { code: "it", name: "Italian", flag: "🇮🇹" },
+    { code: "pt", name: "Portuguese", flag: "🇵🇹" },
+    { code: "ar", name: "Arabic", flag: "🇸🇦" },
+    { code: "zh-CN", name: "Chinese (中文)", flag: "🇨🇳" },
+    { code: "ja", name: "Japanese (日本語)", flag: "🇯🇵" },
+    { code: "ko", name: "Korean (한국어)", flag: "🇰🇷" },
 ]
+
+// Google Translate supported language codes
+const googleTranslateCodes = "en,am,ti,om,so,es,fr,de,it,pt,ar,zh-CN,ja,ko"
+
+// Helper function to get language flag
+const getLanguageFlag = (code) => {
+    const language = languages.find((lang) => lang.code === code)
+    return language?.flag || "🌐"
+}
 
 // Simple dropdown component
 function SimpleDropdown({ trigger, children }) {
@@ -40,17 +52,24 @@ function SimpleDropdown({ trigger, children }) {
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center gap-1 rounded-md bg-white text-gray-800 dark:bg-gray-900 dark:text-white px-2 py-1 text-xs font-medium shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none"
+                className="flex items-center gap-2 p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none"
+                aria-label="Select language"
             >
                 {trigger}
             </button>
 
             {isOpen && (
-                <div className="absolute right-0 mt-1 w-40 rounded-md bg-white text-gray-800 dark:bg-gray-900 dark:text-white shadow-lg ring-1 ring-black ring-opacity-5 z-50">
-                    <div className="py-1" role="menu" aria-orientation="vertical">
-                        {children}
+                <>
+                    <div 
+                        className="fixed inset-0" 
+                        onClick={() => setIsOpen(false)}
+                    ></div>
+                    <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 z-50">
+                        <div className="py-1" role="menu" aria-orientation="vertical">
+                            {children}
+                        </div>
                     </div>
-                </div>
+                </>
             )}
         </div>
     )
@@ -119,7 +138,8 @@ export default function LanguageSelector() {
                     {
                         pageLanguage: "en",
                         autoDisplay: false,
-                        includedLanguages: languages.map((lang) => lang.code).join(","),
+                        includedLanguages: googleTranslateCodes,
+                        multilanguagePage: true,
                     },
                     translateElementId,
                 )
@@ -231,29 +251,33 @@ export default function LanguageSelector() {
         }
     }, [mounted, window.location.pathname])
 
+    const currentLang = languages.find((lang) => lang.code === currentLanguage)
+    
     return (
-        <div className="fixed top-14 right-2 z-50" style={{ transform: "rotate(0deg)" }}>
-            <SimpleDropdown
-                trigger={
-                    <>
-                        <Globe className="h-3 w-3" />
-                        <span>{languages.find((lang) => lang.code === currentLanguage)?.name.split(" ")[0] || "Lang"}</span>
-                        <ChevronDown className="h-3 w-3" />
-                    </>
-                }
-            >
-                {languages.map((language) => (
-                    <button
-                        key={language.code}
-                        onClick={() => changeLanguage(language.code)}
-                        className={`block w-full text-left px-4 py-2 text-xs text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                            currentLanguage === language.code ? "font-bold bg-gray-50 dark:bg-gray-800" : ""
-                        }`}
-                    >
-                        {language.name}
-                    </button>
-                ))}
-            </SimpleDropdown>
-        </div>
+        <SimpleDropdown
+            trigger={
+                <>
+                    <Globe className="h-5 w-5" />
+                    <span className="text-sm font-medium">{currentLang?.name.split(" ")[0] || "English"}</span>
+                    <ChevronDown className="h-4 w-4" />
+                </>
+            }
+        >
+            {languages.map((language) => (
+                <button
+                    key={language.code}
+                    onClick={() => changeLanguage(language.code)}
+                    className={`flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-cyan-50 dark:hover:bg-cyan-900/20 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors ${
+                        currentLanguage === language.code ? "bg-cyan-50 dark:bg-cyan-900/20 text-cyan-600 dark:text-cyan-400 font-semibold" : ""
+                    }`}
+                >
+                    <span className="text-lg">{getLanguageFlag(language.code)}</span>
+                    <span>{language.name}</span>
+                    {currentLanguage === language.code && (
+                        <span className="ml-auto text-cyan-600 dark:text-cyan-400">✓</span>
+                    )}
+                </button>
+            ))}
+        </SimpleDropdown>
     )
 }
