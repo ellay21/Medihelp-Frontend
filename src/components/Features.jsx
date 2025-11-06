@@ -3,7 +3,7 @@ import illustrationImage from '../assets/about.png'; // Hero illustration
 import teamIllustration from '../assets/about3.png'; // Team illustration for "Who We Are"
 import phoneGraphic from '../assets/about.png'; // Phone graphic for "Who We Are"
 import { Link } from "react-router-dom";
-import { FaHeartbeat, FaCamera, FaExclamationTriangle, FaBook, FaStethoscope, FaMapPin, FaComments } from "react-icons/fa";
+import { Heart, Camera, AlertTriangle, Book, Stethoscope, MapPin, MessageCircle } from "lucide-react";
 
 const Home = () => {
   // Content data for easy updates
@@ -30,47 +30,47 @@ const Home = () => {
           buttonText: 'Check Symptoms',
           buttonLink: '/symptom-checker',
           title: 'Symptom Checker',
-          icon: <FaHeartbeat className="h-8 w-8 text-blue-600" />,
+          icon: <Heart className="h-8 w-8 text-blue-600" />,
           description: 'Check your symptoms and get preliminary insights about possible conditions.',
         },
         {
           title: 'Skin Diagnosis',
-          icon: <FaCamera className="h-8 w-8 text-blue-600" />,
+          icon: <Camera className="h-8 w-8 text-blue-600" />,
           description: 'Upload a photo of your skin condition for AI-powered analysis and recommendations.',
           buttonText: 'Check Skin Condition',
           buttonLink: '/skin-diagnosis',
         },
         {
           title: 'First Aid Guides',
-          icon: <FaExclamationTriangle className="h-8 w-8 text-blue-600" />,
+          icon: <AlertTriangle className="h-8 w-8 text-blue-600" />,
           description: 'Access comprehensive first aid guides and home remedies for common issues.',
           buttonText: 'View Guides',
           buttonLink: '/first-aid',
         },
         {
           title: 'Health Education',
-          icon: <FaBook className="h-8 w-8 text-blue-600" />,
+          icon: <Book className="h-8 w-8 text-blue-600" />,
           description: 'Learn about various health conditions through articles and educational videos.',
           buttonText: 'Learn More',
           buttonLink: '/education',
         },
         {
           title: 'Find Doctors',
-          icon: <FaStethoscope className="h-8 w-8 text-blue-600" />,
+          icon: <Stethoscope className="h-8 w-8 text-blue-600" />,
           description: 'Connect with qualified healthcare professionals for teleconsultations.',
           buttonText: 'Find Doctors',
           buttonLink: '/find-doctor',
         },
         {
           title: 'Nearby Clinics',
-          icon: <FaMapPin className="h-8 w-8 text-blue-600" />,
+          icon: <MapPin className="h-8 w-8 text-blue-600" />,
           description: 'Locate healthcare facilities near you when you need in-person care.',
           buttonText: 'Find Clinics',
           buttonLink: '/find-clinic',
         },
         {
           title: 'Health Chat',
-          icon: <FaComments className="h-8 w-8 text-blue-600" />,
+          icon: <MessageCircle className="h-8 w-8 text-blue-600" />,
           description: 'Ask health-related questions anytime with SmartChat.',
           buttonText: 'Start Chatting',
           buttonLink: '/symptom-checker',
@@ -108,7 +108,7 @@ const Home = () => {
           <div className="md:w-1/2 flex justify-center">
             <img
               src={illustrationImage}
-              alt="Illustration of professionals collaborating on product development"
+              alt="Healthcare professionals providing medical consultation and care"
               className="w-64 h-64 md:w-96 md:h-96 object-contain"
             />
           </div>
@@ -154,7 +154,7 @@ const Home = () => {
           <div className="md:w-1/2 flex justify-center mb-8 md:mb-0">
             <img
               src={teamIllustration}
-              alt="Illustration of the Pomegranate Studio team"
+              alt="Medical team of doctors and healthcare specialists"
               className="w-64 h-64 md:w-96 md:h-96 object-contain"
             />
           </div>
@@ -176,7 +176,7 @@ const Home = () => {
             {/* Phone Graphic */}
             <img
               src={phoneGraphic}
-              alt="Telegram Mini App on phone"
+              alt="MediHelp+ mobile application interface"
               className="absolute hidden md:block top-0 right-0 w-32 h-48 object-contain transform translate-x-12 -translate-y-12"
             />
           </div>

@@ -97,11 +97,12 @@ const FirstAidList = () => {
   );
 
   return (
-    <div className="container py-10 mt-15 bg-white text-gray-800 dark:bg-gray-900 dark:text-white">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <NavBar />
-      <div className="max-w-4xl mx-auto">
+      <div className="container mx-auto px-4 py-8 mt-20">
+        <div className="max-w-4xl mx-auto">
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold mb-2">First Aid & Home Remedies</h1>
+          <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">First Aid & Home Remedies</h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Access emergency first aid guides and home remedies for common
             health issues. Always seek professional medical help for serious
@@ -319,6 +320,7 @@ const FirstAidList = () => {
               </button>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

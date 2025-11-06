@@ -1,28 +1,30 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { lazy, Suspense } from "react";
 
 // Styles
 import "./styles/translate.css";
 
-// Components
+// Components (not lazy loaded - needed immediately)
 import LanguageSelector from "./components/Languageselector";
 import ProtectedRoute from "./components/ProtectedRoute";
-
-// Pages
-import Login from "./pages/Login";
-import SignupPatient from "./pages/SignupPatient";
-import SignupDoctor from "./pages/SignupDoctor";
-import About from "./pages/AboutUs";
-import FirstAidList from "./pages/FirstAidList";
-import SymptomList from "./pages/SymptomChecker";
-import Home from "./pages/Home";
-import SkinDiagnosis from "./pages/SkinDiagnosis";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import FindDoctor from "./pages/FindDoctor";
-import Dashboard from "./pages/Dashboard";
-import Education from "./pages/Education";
-import ViewProfile from "./pages/ViewProfile";
-import NearbyClinics from "./pages/Clinics";
 import Layout from "./Layout";
+import { LoadingSpinner } from "./components/ui/loading";
+
+// Lazy load pages for better performance
+const Login = lazy(() => import("./pages/Login"));
+const SignupPatient = lazy(() => import("./pages/SignupPatient"));
+const SignupDoctor = lazy(() => import("./pages/SignupDoctor"));
+const About = lazy(() => import("./pages/AboutUs"));
+const FirstAidList = lazy(() => import("./pages/FirstAidList"));
+const SymptomList = lazy(() => import("./pages/SymptomChecker"));
+const Home = lazy(() => import("./pages/Home"));
+const SkinDiagnosis = lazy(() => import("./pages/SkinDiagnosis"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const FindDoctor = lazy(() => import("./pages/FindDoctor"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Education = lazy(() => import("./pages/Education"));
+const ViewProfile = lazy(() => import("./pages/ViewProfile"));
+const NearbyClinics = lazy(() => import("./pages/Clinics"));
 
 function App() {
   return (
@@ -30,12 +32,13 @@ function App() {
       {/* 🌍 Language Selector always visible */}
       <LanguageSelector />
 
-      <Routes>
-        {/* Authentication routes outside Layout */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup/patient" element={<SignupPatient />} />
-        <Route path="/signup/doctor" element={<SignupDoctor />} />
-        <Route path="/privacy" element={<PrivacyPolicy />} />
+      <Suspense fallback={<LoadingSpinner message="Loading MediHelp+..." />}>
+        <Routes>
+          {/* Authentication routes outside Layout */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup/patient" element={<SignupPatient />} />
+          <Route path="/signup/doctor" element={<SignupDoctor />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
 
         {/* Routes inside Layout wrapper */}
         <Route element={<Layout />}>
@@ -95,6 +98,7 @@ function App() {
           />
         </Route>
       </Routes>
+      </Suspense>
     </Router>
   );
 }
