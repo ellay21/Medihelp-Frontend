@@ -52,17 +52,33 @@ const SymptomList = () => {
       setSubmitting(true);
       setError(null);
       const response = await checkSymptoms({ symptoms: selectedSymptoms });
-      console.log("Diagnosis response:", response);
+      console.log("Full Diagnosis response:", response);
+      console.log("Response type:", typeof response);
+      console.log("Response keys:", Object.keys(response || {}));
       setDiagnosis(response);
       setAiResponse(null);
       
       // Scroll to results after a short delay
       setTimeout(() => {
-        resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 300);
+        if (resultsRef.current) {
+          resultsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+          console.log("Scrolled to results");
+        } else {
+          console.log("Results ref not found");
+        }
+      }, 500);
     } catch (err) {
       console.error("Error checking symptoms:", err);
-      setError(err.message || "Failed to check symptoms");
+      const errorMessage = err.message || "Failed to check symptoms";
+      
+      // Check if it's a throttling error
+      if (errorMessage.includes("throttled") || errorMessage.includes("Expected available in")) {
+        const match = errorMessage.match(/(\d+)\s*seconds/);
+        const seconds = match ? match[1] : "a few";
+        setError(`⏱️ Too many requests. Please wait ${seconds} seconds before trying again.`);
+      } else {
+        setError(errorMessage);
+      }
       setDiagnosis(null);
     } finally {
       setSubmitting(false);
@@ -89,7 +105,16 @@ const SymptomList = () => {
       }, 300);
     } catch (err) {
       console.error("Error getting AI response:", err);
-      setError(err.message || "Failed to get AI response");
+      const errorMessage = err.message || "Failed to get AI response";
+      
+      // Check if it's a throttling error
+      if (errorMessage.includes("throttled") || errorMessage.includes("Expected available in")) {
+        const match = errorMessage.match(/(\d+)\s*seconds/);
+        const seconds = match ? match[1] : "a few";
+        setError(`⏱️ Too many requests. Please wait ${seconds} seconds before trying again.`);
+      } else {
+        setError(errorMessage);
+      }
       setAiResponse(null);
     } finally {
       setSubmitting(false);
@@ -215,48 +240,94 @@ const SymptomList = () => {
                   </div>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
                   {sortedSymptoms.map((symptom) => (
-                    <motion.div
+                    <div
                       key={symptom.id}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className={`p-4 rounded-xl border-2 transition-all duration-200 cursor-pointer ${
+                      onClick={() => handleSymptomChange(symptom.id)}
+                      className={`group relative p-5 rounded-2xl border-2 transition-all duration-300 cursor-pointer overflow-hidden hover:scale-[1.03] hover:-translate-y-1 active:scale-[0.97] ${
                         selectedSymptoms.includes(symptom.id)
-                          ? "bg-gradient-to-br from-blue-50 to-blue-100 border-blue-400 shadow-lg dark:from-blue-900/30 dark:to-blue-800/30 dark:border-blue-500"
-                          : "bg-white border-gray-200 hover:border-blue-300 hover:shadow-md dark:bg-slate-700 dark:border-slate-600 dark:hover:border-blue-500"
+                          ? "bg-gradient-to-br from-blue-50 via-blue-100 to-indigo-100 border-blue-500 shadow-xl ring-2 ring-blue-400 ring-opacity-50 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-indigo-900/40 dark:border-blue-400"
+                          : "bg-white border-gray-200 hover:border-blue-400 hover:shadow-lg dark:bg-slate-700 dark:border-slate-600 dark:hover:border-blue-500 dark:hover:bg-slate-700/80"
                       }`}
                     >
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={selectedSymptoms.includes(symptom.id)}
-                          onChange={() => handleSymptomChange(symptom.id)}
-                          className="mr-3 h-5 w-5 text-blue-600 focus:ring-2 focus:ring-blue-500 border-gray-300 rounded dark:bg-slate-600 dark:border-slate-500"
-                        />
-                        <span className="text-gray-900 dark:text-white font-medium flex-1">{symptom.name}</span>
-                        {selectedSymptoms.includes(symptom.id) && (
-                          <CheckCircle className="ml-2 w-5 h-5 text-green-500 dark:text-green-400" />
-                        )}
+                      {/* Animated background gradient on hover */}
+                      <div className={`absolute inset-0 bg-gradient-to-br from-blue-400/10 to-indigo-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+                        selectedSymptoms.includes(symptom.id) ? "opacity-100" : ""
+                      }`} />
+                      
+                      <label className="relative flex items-start cursor-pointer space-x-3">
+                        <div className="flex items-center h-6 mt-0.5">
+                          <input
+                            type="checkbox"
+                            checked={selectedSymptoms.includes(symptom.id)}
+                            onChange={() => handleSymptomChange(symptom.id)}
+                            className="h-5 w-5 text-blue-600 focus:ring-2 focus:ring-blue-500 border-gray-300 rounded transition-all cursor-pointer dark:bg-slate-600 dark:border-slate-500"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className={`text-base font-semibold transition-colors ${
+                              selectedSymptoms.includes(symptom.id)
+                                ? "text-blue-700 dark:text-blue-300"
+                                : "text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400"
+                            }`}>
+                              {symptom.name}
+                            </span>
+                            {selectedSymptoms.includes(symptom.id) && (
+                              <CheckCircle className="w-5 h-5 text-green-500 dark:text-green-400 flex-shrink-0 animate-in zoom-in duration-200" />
+                            )}
+                          </div>
+                          {symptom.description && (
+                            <p className={`text-xs leading-relaxed transition-colors ${
+                              selectedSymptoms.includes(symptom.id)
+                                ? "text-blue-600 dark:text-blue-400"
+                                : "text-gray-500 dark:text-slate-400 group-hover:text-gray-700 dark:group-hover:text-slate-300"
+                            }`}>
+                              {symptom.description.length > 80 
+                                ? `${symptom.description.substring(0, 80)}...` 
+                                : symptom.description
+                              }
+                            </p>
+                          )}
+                        </div>
                       </label>
-                    </motion.div>
+                      
+                      {/* Selected indicator bar */}
+                      {selectedSymptoms.includes(symptom.id) && (
+                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 animate-in slide-in-from-left duration-300" />
+                      )}
+                    </div>
                   ))}
                 </div>
               )}
 
               {selectedSymptoms.length > 0 && (
-                <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-xl border border-blue-200 dark:border-blue-700">
-                  <p className="text-sm font-semibold text-blue-900 dark:text-blue-300 mb-2">
-                    Selected Symptoms ({selectedSymptoms.length}):
-                  </p>
+                <div className="mb-6 p-5 bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-50 dark:from-blue-900/30 dark:via-indigo-900/30 dark:to-blue-900/30 rounded-2xl border-2 border-blue-200 dark:border-blue-700 shadow-md animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-sm font-bold text-blue-900 dark:text-blue-300 flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4" />
+                      Selected Symptoms ({selectedSymptoms.length})
+                    </p>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedSymptoms([]);
+                      }}
+                      className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold transition-colors"
+                    >
+                      Clear all
+                    </button>
+                  </div>
                   <div className="flex flex-wrap gap-2">
                     {selectedSymptoms.map((id) => {
                       const symptom = symptoms.find((s) => s.id === id);
                       return (
                         <span
                           key={id}
-                          className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium"
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-800 dark:to-indigo-800 text-blue-800 dark:text-blue-200 rounded-full text-sm font-semibold shadow-sm border border-blue-200 dark:border-blue-700 transition-transform hover:scale-105"
                         >
+                          <Activity className="w-3.5 h-3.5" />
                           {symptom?.name}
                         </span>
                       );
@@ -376,6 +447,15 @@ const SymptomList = () => {
                 </div>
               )}
             </motion.div>
+          )}
+
+          {/* Debug Info - Remove after testing */}
+          {diagnosis && (
+            <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-700">
+              <p className="text-sm font-mono text-yellow-900 dark:text-yellow-300">
+                Debug: Diagnosis data exists - {JSON.stringify(Object.keys(diagnosis))}
+              </p>
+            </div>
           )}
 
           {/* Diagnosis & AI Result */}
