@@ -117,9 +117,11 @@ const SkinDiagnosis = () => {
       setLoading(true);
       setError(null);
       const response = await uploadSkinDiagnosis(formData);
-      setDiagnosis(response.data);
+      console.log("Skin diagnosis response:", response);
+      setDiagnosis(response);
       setCredits((prevCredits) => prevCredits - 10);
     } catch (err) {
+      console.error("Skin diagnosis error:", err);
       setError(err.message || "Failed to upload image or get diagnosis");
     } finally {
       setLoading(false);
@@ -397,29 +399,29 @@ const SkinDiagnosis = () => {
                   <div>
                     <h3 className="text-lg font-semibold mb-2">Potential Condition</h3>
                     <p className="text-2xl font-bold text-purple-600 mb-4">
-                      {diagnosis.diagnosis.conditions[0] || "Unknown condition"}
+                      {diagnosis?.diagnosis?.conditions?.[0] || diagnosis?.conditions?.[0] || "Unknown condition"}
                     </p>
                     <div className="space-y-3">
                       <div>
                         <div className="flex justify-between mb-1 text-sm">
                           <span className="font-medium">Confidence Level</span>
-                          <span>{Math.round(diagnosis.diagnosis.confidence * 100)}%</span>
+                          <span>{Math.round((diagnosis?.diagnosis?.confidence || diagnosis?.confidence || 0) * 100)}%</span>
                         </div>
                         <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                           <div 
                             className="bg-gradient-to-r from-purple-600 to-pink-600 h-2 rounded-full" 
-                            style={{ width: `${diagnosis.diagnosis.confidence * 100}%` }}
+                            style={{ width: `${(diagnosis?.diagnosis?.confidence || diagnosis?.confidence || 0) * 100}%` }}
                           />
                         </div>
                       </div>
                       <div>
                         <span className="text-sm font-medium">Severity: </span>
                         <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
-                          diagnosis.diagnosis.urgency === "low" ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" :
-                          diagnosis.diagnosis.urgency === "medium" ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400" :
+                          (diagnosis?.diagnosis?.urgency || diagnosis?.urgency) === "low" ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" :
+                          (diagnosis?.diagnosis?.urgency || diagnosis?.urgency) === "medium" ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400" :
                           "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
                         }`}>
-                          {diagnosis.diagnosis.urgency.charAt(0).toUpperCase() + diagnosis.diagnosis.urgency.slice(1)}
+                          {((diagnosis?.diagnosis?.urgency || diagnosis?.urgency || "unknown").charAt(0).toUpperCase() + (diagnosis?.diagnosis?.urgency || diagnosis?.urgency || "unknown").slice(1))}
                         </span>
                       </div>
                     </div>
@@ -435,7 +437,7 @@ const SkinDiagnosis = () => {
                 <div>
                   <h3 className="text-lg font-semibold mb-3">Recommended Actions</h3>
                   <ul className="space-y-2">
-                    {diagnosis.diagnosis.recommendations.map((rec, index) => (
+                    {(diagnosis?.diagnosis?.recommendations || diagnosis?.recommendations || []).map((rec, index) => (
                       <li key={index} className="flex items-start gap-2">
                         <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700 dark:text-gray-300">{rec}</span>
