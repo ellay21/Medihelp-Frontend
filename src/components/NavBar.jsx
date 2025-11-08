@@ -21,7 +21,7 @@ import {
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import LanguageSelector from "./LanguageSelector";
+import LanguageSelector from "./Languageselector";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
