@@ -15,14 +15,14 @@ const Testimonials = () => {
     },
     {
       quote: "The first aid feature is a lifesaver—literally!",
-      author: "Yohannes Alemu",
+      author: "John Stuart",
       role: "Student",
       image: people1,
       rating: 5,
     },
     {
       quote: "Great app for quick health advice when I need it most.",
-      author: "Alemayehu Tilahun",
+      author: "Muhamed Suleman",
       role: "Office Worker",
       image: people3,
       rating: 5,
